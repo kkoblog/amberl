@@ -66,7 +66,7 @@ const InstagramEmbed = ({ url }) => {
 };
 
 // スタッフカードコンポーネントの作成
-const StaffCard = ({ image, name, position, message, instagramUrl }) => {
+const StaffCard = ({ image, name, position, message }) => {
   return (
     <div className="bg-[#f5f5f5] p-4 md:p-8 rounded-xl shadow-sm">
       <div className="bg-white/80 p-6 rounded-xl shadow-sm h-full flex flex-col">
@@ -82,7 +82,7 @@ const StaffCard = ({ image, name, position, message, instagramUrl }) => {
               alt={`スタッフ${name}`}
               width={128}
               height={128}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
           </div>
           <div>
@@ -92,26 +92,64 @@ const StaffCard = ({ image, name, position, message, instagramUrl }) => {
         </div>
         
         <div className="space-y-4 mb-6">
-          <p className="text-gray-700">
+          <p className="text-gray-700 leading-relaxed mb-6">
             {message}
           </p>
           
-          <p className="text-gray-700">
-            でも<span className="font-bold text-[#D3B58D]">michillでは</span>、
-            <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
-              スタッフが快く対応してくれ、お客様への連絡も代わりにしてくれます。
-            </span>
-          </p>
-          
-          <p className="text-gray-700">
-            お客様も子育て経験者が多く理解があるので、
-            <span className="border-b-2 border-[#D3B58D]">
-              ママでも安心して美容師を続けられています！
-            </span>
-          </p>
+          {name === "峯 琴奈" ? (
+            <>
+              <p className="text-gray-700 leading-relaxed mb-6">
+  でも<span className="font-bold text-[#D3B58D]">amberlに入社して</span>、
+  <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+    マンツーマンサロンならではの、お客様一人一人との丁寧な関わりを学ぶことができました。
+    アットホームな雰囲気の中、スタッフ同士も仲が良く、分からないことも親切に教えてもらえる環境です。
+  </span>
+</p>
+
+<p className="text-gray-700 leading-relaxed mb-6">
+  自宅からの通いやすさに加えて、
+  <span className="border-b-2 border-[#D3B58D]">
+    完全週休2日で月8〜9日休めるメリハリのある働き方でプライベートも充実。お客様とスタッフの関係性も深く、安心して働ける環境です。
+  </span>
+</p>
+
+<p className="text-gray-700 leading-relaxed mb-6">
+  <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+    スタッフ一人一人が生き生きと働けるサロンで、毎日がやりがいに満ちています。
+  </span>
+</p>
+            </>
+          ) : (
+            <>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="font-bold text-[#D3B58D]">amberlに入社したきっかけは</span>、
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+                  自宅からも保育園からも通いやすく、オーナーさん自身もお子さんがいらっしゃるので、子育てをしながらの仕事に理解があると考えたからです。
+                </span>
+              </p>
+
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="border-b-2 border-[#D3B58D]">
+                  お客様とマンツーマンということもあり、施術の時間配分やお客様との関わり方がとても勉強になりました。
+                </span>
+              </p>
+
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+                  お客様も長くご来店いただいている方が多く、お客様ともスタッフ同士も仲が良いです。
+                  また分からないところはしっかりと教えていただけるので安心して働けています。
+                </span>
+              </p>
+
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block">
+                  子供がいるスタッフも多く、育児をしながらの仕事もとても理解があるあたたかいサロンです。
+                  自分に合った働き方でプライベートも仕事もしっかり充実させられるサロンですので、是非一緒に働きましょう！
+                </span>
+              </p>
+            </>
+          )}
         </div>
-        
-        <InstagramEmbed url={instagramUrl} />
       </div>
     </div>
   );
@@ -122,11 +160,11 @@ const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
     {
-      src: "/image/gaikan.jpg",
+      src: "/image/gaikan.jpeg",
       alt: "外観の様子"
     },
     {
-      src: "/image/naikan.jpg",
+      src: "/image/tokutyou.jpeg",
       alt: "店内の様子"
     }
   ];
@@ -372,7 +410,6 @@ function MainComponent() {
             >
               応募する
             </Link>
-          
           </div>
         </div>
       </section>
@@ -394,7 +431,7 @@ function MainComponent() {
           
           <div className="relative">
             <Image
-              src="/image/michill.jpg"
+              src="/image/naisou.jpeg"
               alt="明るく清潔感のあるサロン内装"
               width={1200}
               height={600}
@@ -411,7 +448,8 @@ function MainComponent() {
                 
                 <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
                   ー<br />
-                  
+                  ー<br />
+                  ー
                 </p>
                 
                 <div className="relative">
@@ -469,8 +507,8 @@ function MainComponent() {
 
       <section className="py-16 md:py-24 mt-8 md:mt-12">
         <SectionHeader 
-          title="世の中の女性美容師さんが抱える悩み事、当サロンでは一切致しません"
-          subtitle="現場で女性美容師さんを困らせること"
+          title="多くの美容師が抱える悩み事、当サロンでは一切致しません"
+          subtitle="現場で美容師を困らせがちな環境や課題"
         />
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 gap-2 md:gap-8">
@@ -486,9 +524,7 @@ function MainComponent() {
                 
                 ].map((concern, index) => (
                   <React.Fragment key={index}>
-                    <div 
-                      className={`border-2 border-red-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed whitespace-pre-line`}
-                    >
+                    <div className="border-2 border-red-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
                       {concern}
                     </div>
                     {index < 4 && (
@@ -513,12 +549,9 @@ function MainComponent() {
                   "スタイリスト見習いでも安心の環境\n入社1年目でも月収25-30万円、入社初月70〜80名入客実績あり✨"
                 ].map((solution, index) => (
                   <React.Fragment key={index}>
-                    <div 
-                      className={`border-2 border-[#D3B58D] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed`}
-                    >
+                    <div className="border-2 border-[#D3B58D] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
                       {solution}
                     </div>
-                    
                     {index < 4 && (
                       <div className="text-[#D3B58D] text-base md:text-2xl">
                         ↓
@@ -591,7 +624,7 @@ function MainComponent() {
               style={{ transitionDelay: '300ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">②</span>
-              ゆとりある働き方
+              東京でやっている技術が名古屋の金山で学べる
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
@@ -621,7 +654,7 @@ function MainComponent() {
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-               
+                
                 <br />
                 <span className="text-[#D3B58D] font-medium">スタイリスト一人一人に専用の材料棚を用意</span>し、
                 <br />
@@ -697,11 +730,9 @@ function MainComponent() {
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  これにより、急な体調のゆらぎが起こった場合はしばらくは在宅に切り替えたり、
-                  現場以外のメーカー部や企画広報部としてのお仕事で地域貢献もできます、
-                  弊社ではコンセプトの異なる4サロンを展開しているため、
-                  年齢や希望に沿った働き方を一緒に作っていきましょう。
-
+                  お客様から「あなた以外は嫌だ」と言っていただけることで、あなたの技術や接客が正当に評価され、
+                  固定客として長期的な信頼関係を築くことができます。これにより、安定した収入が見込め、
+                  キャリアの選択肢も広がります
                 </p>
               </div>
             </div>
@@ -726,9 +757,9 @@ function MainComponent() {
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  「白髪老化ケア」という頭皮や髪を錆びさせずに、
-                  守り続ける施術を自社開発しました。
-                  これにより、お客様が失客せず、末永く施術することが可能になりました。
+                高度な技術力を身につけることで、
+                  業務委託や面貸し、独立開業など、どのような環境でも
+                  活躍できる実力が身につきます
                 </p>
               </div>
             </div>
@@ -752,7 +783,12 @@ function MainComponent() {
                   {[
                     { time: "9:30", activity: "出勤、掃除" },
                     { time: "10:00", activity: "オープン" },
-                    { time: "10:00-18:00", activity: "スタイリスト施術業務" }
+                    { time: "10:00-18:00", activity: "スタイリスト施術業務" },
+                    { 
+                      time: "ランチタイム", 
+                      activity: "カラーの放置時間や予約の空き時間を利用して、自由なタイミングで休憩" ,
+                      note: "※施術の合間に柔軟に取得可能"
+                    }
                   ].map((schedule, index) => (
                     <div 
                       key={index}
@@ -763,6 +799,9 @@ function MainComponent() {
                       </div>
                       <div className="flex-grow">
                         <span className="text-gray-700">{schedule.activity}</span>
+                        {schedule.note && (
+                          <span className="block text-sm text-gray-500 mt-1">{schedule.note}</span>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -808,20 +847,33 @@ function MainComponent() {
       </section>
 
       <section className="py-16 md:py-24">
+      <SectionHeader 
+          title="スタッフ紹介"
+          subtitle="働く仲間"
+        />
         
         <div className="max-w-5xl mx-auto px-4">
           <div className="space-y-8">
             <StaffCard 
-              image="/image/aoi.jpg"
-              name="あおい"
-              position="入社4年目 / スタイリスト"
-              message={`4歳の子供がいるため、急な休みを取ることも...`}
-              instagramUrl="https://www.instagram.com/reel/C_7jiphvJ4I/embed"
+              image="/image/st2.jpeg"
+              name="峯 琴奈"
+              position="入社5年 / スタイリスト"
+              message={`以前は、技術を学ぶ機会が限られていて、なかなか成長を実感できない環境でした。
+                  時間に追われる毎日で、お客様一人一人と向き合う余裕もなく...`}
             />
-            {/* 必要に応じて追加のStaffCardを配置 */}
+            
+            <StaffCard 
+              image="/image/st.jpeg"
+              name="RINA"
+              position="入社13年 / スタイリスト"
+              message={`ママ美容師として、大好きな美容師の仕事を続けていきたい気持ちと、
+    子育ての時間を大切にしたい思いの間で悩んでいました...`}
+            />
           </div>
         </div>
       </section>
+
+      
 
     
 
@@ -923,7 +975,7 @@ function MainComponent() {
           content: (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium mb-2">社会保険・手当</p>
+                <p className="font-medium mb-2">社会保険・手当 ※社員のみ</p>
                 <ul className="list-disc list-inside space-y-1 text-gray-600">
                   <li>社会保険完備</li>
                   <li>通勤手当支給</li>
@@ -941,7 +993,6 @@ function MainComponent() {
             </div>
           )
         },
-        
       ].map((item, index) => (
         <div 
           key={index}
@@ -1031,11 +1082,11 @@ function MainComponent() {
               <div className="md:w-1/3 flex flex-col items-center text-center">
                 <div className="w-32 h-32 md:w-64 md:h-64 overflow-hidden rounded-full border-4 border-white shadow-md mb-6">
                   <Image
-                    src="/image/roni.jpg"
+                    src="/image/itou.jpeg"
                     alt="オーナーの写真"
                     width={500}
                     height={500}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-top"
                     priority
                   />
                 </div>
