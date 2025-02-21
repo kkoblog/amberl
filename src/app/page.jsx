@@ -160,7 +160,7 @@ const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const images = [
     {
-      src: "/image/gaikan.jpeg",
+      src: "/image/gaikan1.JPG",
       alt: "外観の様子"
     },
     {
@@ -624,7 +624,7 @@ function MainComponent() {
               style={{ transitionDelay: '300ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">②</span>
-              東京でやっている技術が名古屋の金山で学べる
+              ワークライフバランスを考えた働き方ができます
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
@@ -654,8 +654,7 @@ function MainComponent() {
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                
-                <br />
+ 
                 <span className="text-[#D3B58D] font-medium">スタイリスト一人一人に専用の材料棚を用意</span>し、
                 <br />
                 自分が使いたい材料、お客様に合った商品を
@@ -891,41 +890,100 @@ function MainComponent() {
         },
         {
           title: "雇用形態",
-          content: "正社員"
+          content: "正社員・業務委託"
         },
         {
           title: "職種・給与",
           content: (
-            <div className="space-y-6">
-              <div>
-                <p className="font-medium mb-3">給与体系</p>
-                <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                  <li>月給23万円～50万円 ※一律支給手当含む</li>
-                  <li>基本給：21万円～40万円</li>
-                  <li>試用期間：2ヵ月間</li>
-                </ul>
-              </div>
-              
-              <div>
-                <p className="font-medium mb-3">手当・賞与</p>
-                <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                  <li>通勤手当：5,000円～2万円（通勤距離に応じて）</li>
-                  <li>役職手当：1万円～3万円（役職により変動）</li>
-                  <li>住宅手当：5,000円～2万円（住宅条件により変動）</li>
-                  <li>勤続手当：1,000円～10万円（歩合給に依存）</li>
-                  <li>賞与・昇給：あり</li>
-                </ul>
+            <div className="space-y-8">
+              {/* 正社員の情報 */}
+              <div className="border-l-4 border-[#D3B58D] pl-4">
+                <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
+                <div className="space-y-6">
+                  <div>
+                    <p className="font-medium mb-3">給与体系</p>
+                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <li>月給23万円～50万円 ※一律支給手当含む</li>
+                      <li>基本給：21万円～40万円</li>
+                      <li>試用期間：2ヵ月間</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <p className="font-medium mb-3">手当・賞与</p>
+                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <li>通勤手当：5,000円～2万円（通勤距離に応じて）</li>
+                      <li>役職手当：1万円～3万円（役職により変動）</li>
+                      <li>住宅手当：5,000円～2万円（住宅条件により変動）</li>
+                      <li>勤続手当：1,000円～10万円（歩合給に依存）</li>
+                      <li>賞与・昇給：あり</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-medium mb-3">給与例</p>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        基本給210,000円＋固定残業手当20,000円（15時間未満/月）※残業時間を超過する場合は別途支給<br />
+                        ＋歩合給（売上の5〜10%）＋店販手当10%<br />
+                        <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
+                        総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円＋通勤手当10,000円）
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <p className="font-medium mb-3">給与例</p>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    基本給210,000円＋固定残業手当20,000円（15時間未満/月）※残業時間を超過する場合は別途支給<br />
-                    ＋歩合給（売上の5〜10%）＋店販手当10%<br />
-                    <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
-                    総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円＋通勤手当10,000円）
-                  </p>
+              {/* 業務委託の情報 */}
+              <div className="border-l-4 border-[#4a90e2] pl-4">
+                <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
+                <div className="space-y-6">
+                  <div>
+                    <p className="font-medium mb-3">基本情報</p>
+                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <li>完全歩合制</li>
+                      <li>保障給：月額30万円（入社後2ヶ月間）</li>
+                      <li>基本給：20万円～150万円</li>
+                      <li>試用期間：2ヵ月間</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <p className="font-medium mb-3">歩合内容</p>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <ul className="space-y-2 text-sm text-gray-600">
+                        <li>技術売上（フリー・指名共通）：
+                          <ul className="ml-4 space-y-1">
+                            <li>～600,000円 → 50％</li>
+                            <li>600,001～1,000,000円 → 55％</li>
+                            <li>1,000,001～1,500,000円 → 60％</li>
+                            <li>1,500,001円～ → 65％</li>
+                          </ul>
+                        </li>
+                        <li>店販売上：10%</li>
+                        <li>指名料売上：100%（料金は要相談）</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="font-medium mb-3">給与例</p>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        例）技術売上1,000,000円、店販売上100,000円の場合<br />
+                        総支給560,000円（歩合給550,000円＋店販手当10,000円）
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="font-medium mb-3">費用負担</p>
+                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <li>ブース代：330円×入客数/月</li>
+                      <li>消耗品材料費：技術売上の5～10%程度</li>
+                      <li>タオル代：技術売上×0.5%/月</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -934,13 +992,40 @@ function MainComponent() {
         {
           title: "勤務時間",
           content: (
-            <div className="space-y-4">
-              <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
-              <ul className="list-disc list-inside space-y-1 text-gray-600">
-                <li>週5勤務</li>
-                <li>18時以降予約がなければ帰宅可</li>
-                <li>残業なし</li>
-              </ul>
+            <div className="space-y-6">
+              {/* 正社員の勤務時間 */}
+              <div className="border-l-4 border-[#D3B58D] pl-4">
+                <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
+                <div className="space-y-4">
+                  <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>週5勤務</li>
+                    <li>18時以降予約がなければ帰宅可</li>
+                    <li>残業なし</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* 業務委託の勤務時間 */}
+              <div className="border-l-4 border-[#4a90e2] pl-4">
+                <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
+                <div className="space-y-4">
+                  <p>自由出勤制（営業時間：09:30 - 19:00）</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>勤務可能日：火・水・木・金・土・日</li>
+                    <li>18時以降予約のない場合は帰宅可能</li>
+                    <li>業務委託のため残業自由</li>
+                  </ul>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="text-sm font-medium mb-2">1日の勤務例</p>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      <li>9:30～ 清掃、開店準備</li>
+                      <li>10:00～ 営業開始</li>
+                      <li>18:00～ 終わり次第自由解散</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           )
         },
