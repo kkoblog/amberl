@@ -701,10 +701,9 @@ function MainComponent() {
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  これにより、体と心に負担がかからず、家庭とお仕事の両立ができます。
-                  女性にゆとりができると家族の雰囲気もガラッと変わりますね。
-                  10年後、お子さまやパートナーからもリスペクトされる働き方を作りましょう。
-          
+                  完全週休2日制で月8〜9日休めるため、家族との時間や自分の時間を大切にできます。
+                  また、1日最大5名までの施術で心と体に余裕を持って働けるため、仕事と家庭を無理なく両立できます。
+                  長く美容師として活躍できる、持続可能な働き方を実現できます。
                 </p>
               </div>
             </div>
@@ -715,8 +714,9 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '200ms' }}
             >
+           
               <h3 className="text-2xl mb-4 font-bold">
-                上下関係がなく人トラブルを最小限に
+                ストレスフリーな職場環境
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
@@ -729,9 +729,13 @@ function MainComponent() {
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  お客様から「あなた以外は嫌だ」と言っていただけることで、あなたの技術や接客が正当に評価され、
-                  固定客として長期的な信頼関係を築くことができます。これにより、安定した収入が見込め、
-                  キャリアの選択肢も広がります
+                  都会の美容室でよくある上下関係や人間関係のストレスから解放されます。
+                  無理な残業や後輩の指導を強制されることもなく、
+                  自分の仕事に集中できる環境です。
+                  帰宅時間が決まっているため、家族との時間や趣味の時間も
+                  しっかり確保できます。
+                  ストレスフリーな環境で、長く美容師として
+                  活躍していただけます。
                 </p>
               </div>
             </div>
@@ -756,9 +760,8 @@ function MainComponent() {
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                高度な技術力を身につけることで、
-                  業務委託や面貸し、独立開業など、どのような環境でも
-                  活躍できる実力が身につきます
+                  現代のワークライフバランスを考え、当店では正社員と業務委託の選択が可能です。
+                  最初は不安なので正社員で入社、のちに業務委託の報酬制にすることも可能です。
                 </p>
               </div>
             </div>
@@ -992,40 +995,13 @@ function MainComponent() {
         {
           title: "勤務時間",
           content: (
-            <div className="space-y-6">
-              {/* 正社員の勤務時間 */}
-              <div className="border-l-4 border-[#D3B58D] pl-4">
-                <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
-                <div className="space-y-4">
-                  <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
-                    <li>週5勤務</li>
-                    <li>18時以降予約がなければ帰宅可</li>
-                    <li>残業なし</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* 業務委託の勤務時間 */}
-              <div className="border-l-4 border-[#4a90e2] pl-4">
-                <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
-                <div className="space-y-4">
-                  <p>自由出勤制（営業時間：09:30 - 19:00）</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
-                    <li>勤務可能日：火・水・木・金・土・日</li>
-                    <li>18時以降予約のない場合は帰宅可能</li>
-                    <li>業務委託のため残業自由</li>
-                  </ul>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm font-medium mb-2">1日の勤務例</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      <li>9:30～ 清掃、開店準備</li>
-                      <li>10:00～ 営業開始</li>
-                      <li>18:00～ 終わり次第自由解散</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            <div className="space-y-4">
+              <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
+              <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <li>週5勤務</li>
+                <li>18時以降予約がなければ帰宅可</li>
+                <li>残業なし</li>
+              </ul>
             </div>
           )
         },
