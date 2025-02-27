@@ -496,7 +496,7 @@ function MainComponent() {
 
       <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
         <Image
-          src="/image/zentai.png"
+          src="/image/syuugou.jpg"
           alt="説明的な代替テキスト"
           width={1200}
           height={800}
@@ -945,7 +945,7 @@ function MainComponent() {
                     <p className="font-medium mb-3">基本情報</p>
                     <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
                       <li>完全歩合制</li>
-                      <li>保障給：月額30万円（入社後2ヶ月間）</li>
+                      <li>保障給：月額25万円（入社後2ヶ月間）</li>
                       <li>基本給：20万円～150万円</li>
                       <li>試用期間：2ヵ月間</li>
                     </ul>
@@ -996,12 +996,22 @@ function MainComponent() {
           title: "勤務時間",
           content: (
             <div className="space-y-4">
-              <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
-              <ul className="list-disc list-inside space-y-1 text-gray-600">
-                <li>週5勤務</li>
-                <li>18時以降予約がなければ帰宅可</li>
-                <li>残業なし</li>
-              </ul>
+              <div className="mb-4">
+                <h4 className="font-medium mb-2">正社員</h4>
+                <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
+                <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <li>週5勤務</li>
+                  <li>18時以降予約がなければ帰宅可</li>
+                  <li>残業なし</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium mb-2">業務委託</h4>
+                <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <li>週5勤務（時短、週4勤務も相談可）</li>
+                  <li>勤務時間は応相談</li>
+                </ul>
+              </div>
             </div>
           )
         },
