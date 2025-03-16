@@ -693,7 +693,7 @@ function MainComponent() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
                   <Image
-                    src="/image/zikannai.JPG"
+                    src="/image/kazoku.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
@@ -721,7 +721,7 @@ function MainComponent() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
                   <Image
-                    src="/image/miga.jpg"
+                    src="/image/sutoresu.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
@@ -752,7 +752,7 @@ function MainComponent() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
                   <Image
-                    src="/image/sezyutu.jpg"
+                    src="/image/itaku.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
