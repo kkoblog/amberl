@@ -5,12 +5,12 @@ import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 
 // セクションヘッダーのコンポーネント化
-const SectionHeader = ({ title, subtitle }) => (
+const SectionHeader = ({ title, subtitle, underlineColor }) => (
   <div className="relative mb-8 md:mb-12 px-4">
     <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-black">
       <span className="relative inline-block pb-4">
         {title}
-        <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#D3B58D]"></span>
+        <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#9cc812]"></span>
       </span>
     </h2>
     {subtitle && (
@@ -39,9 +39,9 @@ const SectionHeader2 = ({ title, subtitle }) => (
 // カラーパレットの定義
 const colors = {
   primary: {
-    bg: 'bg-[#f8f6f4]',      // ベースの明るいベージュ
+    bg: 'bg-[#b6aa98]',      // 新しい背景色
     text: 'text-[#4a4a4a]',  // ダークグレー
-    accent: 'bg-[#d4c3b7]',  // ライトブラウン
+    accent: 'bg-[#9cc812]',  // 新しいアクセントカラー
   },
   secondary: {
     light: 'bg-[#fdfbf9]',   // オフホワイト
@@ -440,16 +440,15 @@ function MainComponent() {
             
             <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
               <div className="text-white px-4 md:px-8 text-center space-y-8">
-                <p className="text-base md:text-2xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                  ー<br />
-                  ー<br />
-                  ー
+                <p className="text-lg md:text-3xl lg:text-4xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
+                ライフワークバランスは当たり前に、<br />
+                不器用な君の美容師人生を見守っていきたい。<br />
                 </p>
                 
                 <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                  ー<br />
-                  ー<br />
-                  ー
+                １年目で○○名の指名ももらえるから、<br />
+                出遅れたことは一切気にせず<br />
+                大好きな美容師の仕事ができるサロン<br />
                 </p>
                 
                 <div className="relative">
@@ -494,41 +493,47 @@ function MainComponent() {
         </button>
       </div>
 
-      <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
-        <Image
-          src="/image/syuugou.jpg"
-          alt="説明的な代替テキスト"
-          width={1200}
-          height={800}
-          className="w-full h-auto rounded-lg shadow-lg"
-          priority
-        />
-      </div>
+      <section className="py-16 md:py-24 mt-8 md:mt-12 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-white/50"></div>
+        <div className="relative z-10 flex items-center justify-center">
+          <div className="px-4 max-w-6xl mx-auto">
+            <Image
+              src="/image/syuugou.jpg"
+              alt="amberlスタッフ集合写真"
+              width={1200}
+              height={800}
+              className="w-full h-auto rounded-lg shadow-lg"
+              priority
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="py-16 md:py-24 mt-8 md:mt-12">
         <SectionHeader 
           title="多くの美容師が抱える悩み事、当サロンでは一切致しません"
           subtitle="現場で美容師を困らせがちな環境や課題"
+          underlineColor="#9cc812"
         />
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 gap-2 md:gap-8">
             {/* 左側: 一般的な美容室の悩み */}
             <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-red-600">＜他店での悩み＞</h3>
+              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-gray-500">＜他店での悩み＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {[
                   "「スタイリストになったのに...」\n先輩の手伝いばかりで、自分の入客の時間がもらえない💦",
                   "「結婚後の生活が不安...」\n朝から夜遅くまで働き、勤務終了後は後輩の面倒を見ないといけない💦",
                   "「技術を磨きたいのに...」\nシャンプー、ブロー、掃除に追われる毎日💦",
                   "「こんなはずじゃなかった...」\n早く帰るスタッフは冷たい目で見られ、残業が当たり前の雰囲気💦",
-                
+                  "「将来が見えない...」\n長時間労働で疲弊し、プライベートも充実できず、美容師としての成長も停滞💦"
                 ].map((concern, index) => (
                   <React.Fragment key={index}>
-                    <div className="border-2 border-red-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
+                    <div className="border-2 border-gray-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed text-gray-600">
                       {concern}
                     </div>
                     {index < 4 && (
-                      <div className="text-red-400 text-base md:text-2xl">
+                      <div className="text-gray-400 text-base md:text-2xl">
                         ↓
                       </div>
                     )}
@@ -539,7 +544,7 @@ function MainComponent() {
 
             {/* 右側: amberlの場合 */}
             <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#D3B58D]">＜amberlの場合＞</h3>
+              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-black">＜amberlの場合＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {[
                   "あなたのワークバランスを考えた働き方を提案・提供\n ",
@@ -549,11 +554,11 @@ function MainComponent() {
                   "スタイリスト見習いでも安心の環境\n入社1年目でも月収25-30万円、入社初月70〜80名入客実績あり✨"
                 ].map((solution, index) => (
                   <React.Fragment key={index}>
-                    <div className="border-2 border-[#D3B58D] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
+                    <div className="border-2 border-[#9cc812] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
                       {solution}
                     </div>
                     {index < 4 && (
-                      <div className="text-[#D3B58D] text-base md:text-2xl">
+                      <div className="text-[#9cc812] text-base md:text-2xl">
                         ↓
                       </div>
                     )}
@@ -565,14 +570,14 @@ function MainComponent() {
         </div>
       </section>
 
-      <div className="mt-4 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 rounded-3xl p-6 md:p-8 relative overflow-hidden">
+      <div className="mt-4 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 p-6 md:p-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-white/50"></div>
         
         <div className="relative z-10">
-          <h3 className="text-xl md:text-3xl font-bold text-center mb-6">
-            <span className="text-[#D3B58D]">amberlの特徴</span>
-            <br className="md:hidden" />
-          </h3>
+        <SectionHeader 
+          title="amberlの特徴"
+          
+        />
 
          
 <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
@@ -671,6 +676,7 @@ function MainComponent() {
         </div>
       </div>
 
+      {/* 得られることセクション */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
         <SectionHeader 
           title="amberlで働くことで得られる事"
@@ -752,7 +758,7 @@ function MainComponent() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
                   <Image
-                    src="/image/itaku.jpg"
+                    src="/image/itaku.JPG"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
@@ -766,66 +772,73 @@ function MainComponent() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-16">
-            <div 
-              className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
-                contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-            >
-              <h3 className="text-2xl mb-6 font-bold text-center">
-                <span className="relative inline-block">
-                  現場仕事の日のとある1日
-                  <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#D3B58D]/30"></span>
-                </span>
-              </h3>
-              
-              <div className="max-w-2xl mx-auto">
-                <div className="space-y-4">
-                  {[
-                    { time: "9:30", activity: "出勤、掃除" },
-                    { time: "10:00", activity: "オープン" },
-                    { time: "10:00-18:00", activity: "スタイリスト施術業務" },
-                    { 
-                      time: "ランチタイム", 
-                      activity: "カラーの放置時間や予約の空き時間を利用して、自由なタイミングで休憩" ,
-                      note: "※施術の合間に柔軟に取得可能"
-                    }
-                  ].map((schedule, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center gap-6 p-4 hover:bg-[#D3B58D]/5 rounded-lg transition-colors duration-300"
-                    >
-                      <div className="w-24 flex-shrink-0">
-                        <span className="font-bold text-[#D3B58D]">{schedule.time}</span>
-                      </div>
-                      <div className="flex-grow">
-                        <span className="text-gray-700">{schedule.activity}</span>
-                        {schedule.note && (
-                          <span className="block text-sm text-gray-500 mt-1">{schedule.note}</span>
-                        )}
-                      </div>
+      {/* 得られることと現場仕事の間の余白 */}
+      <div className="h-16 md:h-24"></div>
+
+      {/* 現場仕事の日のとある1日セクション - 独立したセクションとして実装 */}
+      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
+        <div className="absolute inset-0 bg-white/50"></div>
+        
+        <div className="relative z-10">
+          <SectionHeader 
+            title="現場仕事の日のとある1日"
+          />
+          
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-2xl mx-auto">
+              <div className="space-y-6">
+                {[
+                  { time: "9:30", activity: "出勤、掃除" },
+                  { time: "10:00", activity: "オープン" },
+                  { time: "10:00-18:00", activity: "スタイリスト施術業務" },
+                  { 
+                    time: "ランチタイム", 
+                    activity: "カラーの放置時間や予約の空き時間を利用して、自由なタイミングで休憩",
+                    note: "※施術の合間に柔軟に取得可能"
+                  }
+                ].map((schedule, index) => (
+                  <div 
+                    key={index}
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6 p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-[#D3B58D]"
+                  >
+                    <div className="w-full sm:w-28 flex-shrink-0 mb-2 sm:mb-0">
+                      <span className="font-bold text-[#D3B58D] text-sm sm:text-base">{schedule.time}</span>
                     </div>
-                  ))}
+                    <div className="flex-grow">
+                      <span className="text-gray-700 font-medium text-sm sm:text-base">{schedule.activity}</span>
+                      {schedule.note && (
+                        <span className="block text-xs sm:text-sm text-gray-500 mt-1 italic">{schedule.note}</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
 
-                  <div className="mt-8 p-6 bg-[#D3B58D]/5 rounded-lg">
-                    
-                    <div className="space-y-4 text-gray-700">
-
-                    <p>
-                        <span className="font-medium">✤ 退勤時間</span><br />
+                <div className="mt-8 p-4 sm:p-8 bg-white rounded-lg shadow-sm border border-[#D3B58D]/20">
+                  <h4 className="text-base sm:text-lg font-bold mb-4 text-[#D3B58D] border-b pb-2">1日の流れのポイント</h4>
+                  <div className="space-y-4 text-gray-700 text-sm sm:text-base">
+                    <div className="flex items-start">
+                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
+                      <p>
+                        <span className="font-medium">退勤時間</span><br />
                         18:00〜19:00の間で、お客様の施術終了次第、簡単な掃除を行い退勤。
                         その後の残業はありません。
                       </p>
+                    </div>
 
+                    <div className="flex items-start">
+                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
                       <p>
-                        
                         マンツーマン制で、一日平均3〜5名のお客様を担当。
                         メニューに応じて丁寧な施術時間を確保しています。
                       </p>
-                      
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
                       <p>
-                        
                         お客様と親身に向き合い、丁寧な施術ができる環境を整えております。
                         時間に追われることなく、質の高いサービスを提供できます。
                       </p>
@@ -833,17 +846,17 @@ function MainComponent() {
                   </div>
                 </div>
               </div>
+              
+              {/* CTAボタンを追加 */}
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8 sm:mt-12">
+                <Link 
+                  href="/contact" 
+                  className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
+                >
+                  応募する
+                </Link>
+              </div>
             </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
-            <Link 
-              href="/contact" 
-              className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
-            >
-              応募する
-            </Link>
-            
           </div>
         </div>
       </section>
@@ -879,213 +892,217 @@ function MainComponent() {
 
     
 
-<section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
-  <SectionHeader 
-    title="募集要項"
-    subtitle="採用情報"
-  />
-  <div className="max-w-6xl mx-auto px-4">
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-      {[
-        {
-          title: "勤務地",
-          content: "愛知県名古屋市緑区鳴海町母呂後７６"
-        },
-        {
-          title: "雇用形態",
-          content: "正社員・業務委託"
-        },
-        {
-          title: "職種・給与",
-          content: (
-            <div className="space-y-8">
-              {/* 正社員の情報 */}
-              <div className="border-l-4 border-[#D3B58D] pl-4">
-                <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
-                <div className="space-y-6">
-                  <div>
-                    <p className="font-medium mb-3">給与体系</p>
-                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                      <li>月給23万円～50万円 ※一律支給手当含む</li>
-                      <li>基本給：21万円～40万円</li>
-                      <li>試用期間：2ヵ月間</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <p className="font-medium mb-3">手当・賞与</p>
-                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                      <li>通勤手当：5,000円～2万円（通勤距離に応じて）</li>
-                      <li>役職手当：1万円～3万円（役職により変動）</li>
-                      <li>住宅手当：5,000円～2万円（住宅条件により変動）</li>
-                      <li>勤続手当：1,000円～10万円（歩合給に依存）</li>
-                      <li>賞与・昇給：あり</li>
-                    </ul>
-                  </div>
+<section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
+  <div className="absolute inset-0 bg-white/50"></div>
+  
+  <div className="relative z-10">
+    <SectionHeader 
+      title="募集要項"
+      subtitle="採用情報"
+    />
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        {[
+          {
+            title: "勤務地",
+            content: "愛知県名古屋市緑区鳴海町母呂後７６"
+          },
+          {
+            title: "雇用形態",
+            content: "正社員・業務委託"
+          },
+          {
+            title: "職種・給与",
+            content: (
+              <div className="space-y-8">
+                {/* 正社員の情報 */}
+                <div className="border-l-4 border-[#D3B58D] pl-4">
+                  <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <p className="font-medium mb-3">給与体系</p>
+                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                        <li>月給23万円～50万円 ※一律支給手当含む</li>
+                        <li>基本給：21万円～40万円</li>
+                        <li>試用期間：2ヵ月間</li>
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <p className="font-medium mb-3">手当・賞与</p>
+                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                        <li>通勤手当：5,000円～2万円（通勤距離に応じて）</li>
+                        <li>役職手当：1万円～3万円（役職により変動）</li>
+                        <li>住宅手当：5,000円～2万円（住宅条件により変動）</li>
+                        <li>勤続手当：1,000円～10万円（歩合給に依存）</li>
+                        <li>賞与・昇給：あり</li>
+                      </ul>
+                    </div>
 
-                  <div>
-                    <p className="font-medium mb-3">給与例</p>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        基本給210,000円＋固定残業手当20,000円（15時間未満/月）※残業時間を超過する場合は別途支給<br />
-                        ＋歩合給（売上の5〜10%）＋店販手当10%<br />
-                        <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
-                        総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円＋通勤手当10,000円）
-                      </p>
+                    <div>
+                      <p className="font-medium mb-3">給与例</p>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          基本給210,000円＋固定残業手当20,000円（15時間未満/月）※残業時間を超過する場合は別途支給<br />
+                          ＋歩合給（売上の5〜10%）＋店販手当10%<br />
+                          <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
+                          総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円）
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* 業務委託の情報 */}
-              <div className="border-l-4 border-[#4a90e2] pl-4">
-                <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
-                <div className="space-y-6">
-                  <div>
-                    <p className="font-medium mb-3">基本情報</p>
-                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                      <li>完全歩合制</li>
-                      <li>保障給：月額25万円（入社後2ヶ月間）</li>
-                      <li>基本給：20万円～150万円</li>
-                      <li>試用期間：2ヵ月間</li>
-                    </ul>
-                  </div>
+                {/* 業務委託の情報 */}
+                <div className="border-l-4 border-[#4a90e2] pl-4">
+                  <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <p className="font-medium mb-3">基本情報</p>
+                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                        <li>完全歩合制</li>
+                        <li>保障給：月額25万円（入社後2ヶ月間）</li>
+                        <li>基本給：20万円～150万円</li>
+                        <li>試用期間：2ヵ月間</li>
+                      </ul>
+                    </div>
 
-                  <div>
-                    <p className="font-medium mb-3">歩合内容</p>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li>技術売上（フリー・指名共通）：
-                          <ul className="ml-4 space-y-1">
-                            <li>～600,000円 → 50％</li>
-                            <li>600,001～1,000,000円 → 55％</li>
-                            <li>1,000,001～1,500,000円 → 60％</li>
-                            <li>1,500,001円～ → 65％</li>
-                          </ul>
-                        </li>
-                        <li>店販売上：10%</li>
-                        <li>指名料売上：100%（料金は要相談）</li>
+                    <div>
+                      <p className="font-medium mb-3">歩合内容</p>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <ul className="space-y-2 text-sm text-gray-600">
+                          <li>技術売上（フリー・指名共通）：
+                            <ul className="ml-4 space-y-1">
+                              <li>～600,000円 → 50％</li>
+                              <li>600,001～1,000,000円 → 55％</li>
+                              <li>1,000,001～1,500,000円 → 60％</li>
+                              <li>1,500,001円～ → 65％</li>
+                            </ul>
+                          </li>
+                          <li>店販売上：10%</li>
+                          <li>指名料売上：100%（料金は要相談）</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="font-medium mb-3">給与例</p>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <p className="text-sm text-gray-600 leading-relaxed">
+                          例）技術売上1,000,000円、店販売上100,000円の場合<br />
+                          総支給560,000円（歩合給550,000円＋店販手当10,000円）
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="font-medium mb-3">費用負担</p>
+                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                        <li>ブース代：330円×入客数/月</li>
+                        <li>消耗品材料費：技術売上の5～10%程度</li>
+                        <li>タオル代：技術売上×0.5%/月</li>
                       </ul>
                     </div>
                   </div>
-
-                  <div>
-                    <p className="font-medium mb-3">給与例</p>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 leading-relaxed">
-                        例）技術売上1,000,000円、店販売上100,000円の場合<br />
-                        総支給560,000円（歩合給550,000円＋店販手当10,000円）
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="font-medium mb-3">費用負担</p>
-                    <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
-                      <li>ブース代：330円×入客数/月</li>
-                      <li>消耗品材料費：技術売上の5～10%程度</li>
-                      <li>タオル代：技術売上×0.5%/月</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
+            )
+          },
+          {
+            title: "勤務時間",
+            content: (
+              <div className="space-y-4">
+                <div className="mb-4">
+                  <h4 className="font-medium mb-2">正社員</h4>
+                  <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>週5勤務</li>
+                    <li>18時以降予約がなければ帰宅可</li>
+                    <li>残業なし</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">業務委託</h4>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>週5勤務（時短、週4勤務も相談可）</li>
+                    <li>勤務時間は応相談</li>
+                  </ul>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "休日・休暇",
+            content: (
+              <div className="space-y-4">
+                <div>
+                  <p className="font-medium mb-2">年間休日数：110日</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>完全週休2日制</li>
+                    <li>土日休みOK</li>
+                    <li>日曜休みOK</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-medium mb-2">休暇制度</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>年末年始休暇（12/31、1/1.2.3.4）</li>
+                    <li>夏季休暇（2日間 ※年間どこでも使用可、1日ずつの使用可）</li>
+                    <li>冬季休暇（12/31、1/1.2.3.4）</li>
+                    <li>産前・産後休暇（法律に則って）</li>
+                    <li>育児休暇（法律に則って）</li>
+                    <li>年間有給休暇：10日</li>
+                  </ul>
+                </div>
+              </div>
+            )
+          },
+          {
+            title: "福利厚生",
+            content: (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p className="font-medium mb-2">社会保険・手当 ※社員のみ</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>社会保険完備</li>
+                    <li>通勤手当支給</li>
+                    <li>住宅手当支給</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-medium mb-2">その他制度</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>研修、セミナー参加の費用補助（内容に合わせて）</li>
+                    <li>社員旅行（希望者のみ全額会社負担）</li>
+                    <li>社員割引（商品、技術割引あり）</li>
+                  </ul>
+                </div>
+              </div>
+            )
+          },
+        ].map((item, index) => (
+          <div 
+            key={index}
+            className={`flex flex-col md:flex-row border-b border-gray-100 ${
+              index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+            }`}
+          >
+            <div className="w-full md:w-1/4 p-4 md:p-6 bg-[#D3B58D]/5">
+              <h4 className="font-bold text-gray-800">{item.title}</h4>
             </div>
-          )
-        },
-        {
-          title: "勤務時間",
-          content: (
-            <div className="space-y-4">
-              <div className="mb-4">
-                <h4 className="font-medium mb-2">正社員</h4>
-                <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>週5勤務</li>
-                  <li>18時以降予約がなければ帰宅可</li>
-                  <li>残業なし</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">業務委託</h4>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>週5勤務（時短、週4勤務も相談可）</li>
-                  <li>勤務時間は応相談</li>
-                </ul>
-              </div>
+            <div className="w-full md:w-3/4 p-4 md:p-6">
+              {typeof item.content === 'string' ? (
+                <p className="text-gray-600">{item.content}</p>
+              ) : (
+                item.content
+              )}
             </div>
-          )
-        },
-        {
-          title: "休日・休暇",
-          content: (
-            <div className="space-y-4">
-              <div>
-                <p className="font-medium mb-2">年間休日数：110日</p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>完全週休2日制</li>
-                  <li>土日休みOK</li>
-                  <li>日曜休みOK</li>
-                </ul>
-              </div>
-              <div>
-                <p className="font-medium mb-2">休暇制度</p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>年末年始休暇（12/31、1/1.2.3.4）</li>
-                  <li>夏季休暇（2日間 ※年間どこでも使用可、1日ずつの使用可）</li>
-                  <li>冬季休暇（12/31、1/1.2.3.4）</li>
-                  <li>産前・産後休暇（法律に則って）</li>
-                  <li>育児休暇（法律に則って）</li>
-                  <li>年間有給休暇：10日</li>
-                </ul>
-              </div>
-            </div>
-          )
-        },
-        {
-          title: "福利厚生",
-          content: (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="font-medium mb-2">社会保険・手当 ※社員のみ</p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>社会保険完備</li>
-                  <li>通勤手当支給</li>
-                  <li>住宅手当支給</li>
-                </ul>
-              </div>
-              <div>
-                <p className="font-medium mb-2">その他制度</p>
-                <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>研修、セミナー参加の費用補助（内容に合わせて）</li>
-                  <li>社員旅行（希望者のみ全額会社負担）</li>
-                  <li>社員割引（商品、技術割引あり）</li>
-                </ul>
-              </div>
-            </div>
-          )
-        },
-      ].map((item, index) => (
-        <div 
-          key={index}
-          className={`flex flex-col md:flex-row border-b border-gray-100 ${
-            index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-          }`}
-        >
-          <div className="w-full md:w-1/4 p-4 md:p-6 bg-[#D3B58D]/5">
-            <h4 className="font-bold text-gray-800">{item.title}</h4>
           </div>
-          <div className="w-full md:w-3/4 p-4 md:p-6">
-            {typeof item.content === 'string' ? (
-              <p className="text-gray-600">{item.content}</p>
-            ) : (
-              item.content
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    
+      
+    </div>
   </div>
 </section>
 
@@ -1093,54 +1110,58 @@ function MainComponent() {
 
       <RequirementSection />
 
-      <section className="py-16 md:py-24" id="qa" ref={qaRef}>
-        <SectionHeader 
-          title="よくあるご質問"
-          subtitle="Q&A"
-        />
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="space-y-4">
-            {[
-              {
-                question: "働いているスタッフさんは、サロン選びで重視したポイントは何ですか？",
-                answer: "私たちのサロンを選んでくれたスタッフの多くが、「ゆとりのある施術時間」と「家庭との両立のしやすさ」を重視していました。1日最大5名までの施術で、お客様一人一人と向き合える環境を整えています。また、完全週休2日制で、産休・育休の取得率100%など、ライフスタイルに合わせた働き方ができることも魅力の一つだと思います。"
-              },
-              {
-                question: "実際に働いてみて、どのような経験が得られますか？",
-                answer: "マンツーマンということもありお客様との関わり方、丁寧な接客やお気遣いの大切さなどを学ぶことができます。"
-              },
-              {
-                question: "職場の雰囲気や人間関係を教えてください",
-                answer: "上下関係による人間関係のトラブルを最小限に抑えることを心がけています。スタッフ一人一人が自分の強みを活かせるよう、専用の材料棚を用意するなど、個性を重視した環境づくりを行っています。"
-              }
-            ].map((qa, index) => (
-              <details 
-                key={index} 
-                className={`bg-white p-6 rounded-lg shadow-sm group transition-all duration-500 ease-out hover:shadow-md ${
-                  qaInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
-              >
-                <summary className="text-lg md:text-xl font-medium cursor-pointer list-none flex justify-between items-center text-gray-800">
-                  <span className="flex items-center gap-3">
-                    <span className="text-[#D3B58D]">Q.</span>
-                    {qa.question}
-                  </span>
-                  <span className="transform group-open:rotate-180 transition-transform duration-300 text-[#D3B58D]">
-                    ▼
-                  </span>
-                </summary>
-                <div className="mt-4 pl-6 text-gray-600 leading-relaxed">
-                  <span className="text-[#D3B58D] font-medium">A.</span>
-                  <span className="ml-2">{qa.answer}</span>
-                </div>
-              </details>
-            ))}
-          </div>
-          
-          
-        </div>
-      </section>
+      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden" id="qa" ref={qaRef}>
+  <div className="absolute inset-0 bg-white/50"></div>
+  
+  <div className="relative z-10">
+    <SectionHeader 
+      title="よくあるご質問"
+      subtitle="Q&A"
+    />
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="space-y-4">
+        {[
+          {
+            question: "働いているスタッフさんは、サロン選びで重視したポイントは何ですか？",
+            answer: "私たちのサロンを選んでくれたスタッフの多くが、「ゆとりのある施術時間」と「家庭との両立のしやすさ」を重視していました。1日最大5名までの施術で、お客様一人一人と向き合える環境を整えています。また、完全週休2日制で、産休・育休の取得率100%など、ライフスタイルに合わせた働き方ができることも魅力の一つだと思います。"
+          },
+          {
+            question: "実際に働いてみて、どのような経験が得られますか？",
+            answer: "マンツーマンということもありお客様との関わり方、丁寧な接客やお気遣いの大切さなどを学ぶことができます。また、スタイリスト一人一人に専用の材料棚を用意しているため、自分の判断で材料を選び、創造性を発揮できる環境です。お客様との信頼関係を築きながら、技術だけでなく人間性も成長できる場所です。"
+          },
+          {
+            question: "職場の雰囲気や人間関係を教えてください",
+            answer: "上下関係による人間関係のトラブルを最小限に抑えることを心がけています。スタッフ同士も仲が良く、分からないことも親切に教えてもらえる環境です。子育て中のスタッフも多く、育児をしながらの仕事にも理解があるあたたかいサロンです。お客様も長くご来店いただいている方が多く、スタッフとの関係も良好です。"
+          }
+        ].map((qa, index) => (
+          <details 
+            key={index} 
+            className={`bg-white p-6 rounded-lg shadow-sm group transition-all duration-500 ease-out hover:shadow-md ${
+              qaInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+            style={{ transitionDelay: `${index * 150}ms` }}
+          >
+            <summary className="text-lg md:text-xl font-medium cursor-pointer list-none flex justify-between items-center text-gray-800">
+              <span className="flex items-center gap-3">
+                <span className="text-[#D3B58D] font-bold">Q.</span>
+                {qa.question}
+              </span>
+              <span className="transform group-open:rotate-180 transition-transform duration-300 text-[#D3B58D]">
+                ▼
+              </span>
+            </summary>
+            <div className="mt-6 pl-8 text-gray-600 leading-relaxed">
+              <div className="flex">
+                <span className="text-[#D3B58D] font-bold text-lg mr-3">A.</span>
+                <p className="text-gray-700">{qa.answer}</p>
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
         <SectionHeader 
@@ -1209,22 +1230,13 @@ function MainComponent() {
               <div className="flex flex-col space-y-4">
                 <div className="flex space-x-4">
                   <a 
-                    href="https://www.instagram.com/michill_hair/" 
+                    href="https://www.instagram.com/amberl202467/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-2xl hover:text-[#4a90e2]"
                   >
                     <i className="fab fa-instagram"></i>
                     <span className="text-sm ml-2">サロン公式</span>
-                  </a>
-                  <a 
-                    href="https://www.instagram.com/rony_19795/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-2xl hover:text-[#4a90e2]"
-                  >
-                    <i className="fab fa-instagram"></i>
-                    <span className="text-sm ml-2">代表伊藤</span>
                   </a>
                 </div>
                 

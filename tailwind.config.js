@@ -1,7 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  safelist: [
+    'bg-[#b6aa98]',
+    'bg-[#9cc812]',
+    'text-[#4a4a4a]',
+    // 他の動的に生成されるクラスもここに追加
   ],
   theme: {
     extend: {
