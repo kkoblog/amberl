@@ -404,12 +404,14 @@ function MainComponent() {
           
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
-            <Link 
-              href="/contact" 
+            <a 
+              href="https://lin.ee/3u7E6NY"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
             >
               応募する
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -431,7 +433,7 @@ function MainComponent() {
           
           <div className="relative">
             <Image
-              src="/image/naisou.jpeg"
+              src="/image/naisou.jpg"
               alt="明るく清潔感のあるサロン内装"
               width={1200}
               height={600}
@@ -441,12 +443,12 @@ function MainComponent() {
             <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
               <div className="text-white px-4 md:px-8 text-center space-y-8">
                 <p className="text-lg md:text-3xl lg:text-4xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                ライフワークバランスは当たり前に、<br />
-                不器用な君の美容師人生を見守っていきたい。<br />
+                ワークライフバランスは当たり前に、<br />
+                不器用な君の美容師人生を<br />見守っていきたい。<br />
                 </p>
                 
                 <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                １年目で○○名の指名ももらえるから、<br />
+                スタイリスト１年目で100名ほど<br />指名顧客獲得の実績があるから、<br />
                 出遅れたことは一切気にせず<br />
                 大好きな美容師の仕事ができるサロン<br />
                 </p>
@@ -482,13 +484,18 @@ function MainComponent() {
       
 
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
-        <Link 
-          href="/contact" 
+        <a 
+          href="https://lin.ee/3u7E6NY"
+          target="_blank"
+          rel="noopener noreferrer"
           className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
         >
           応募する
-        </Link>
-        <button className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0">
+        </a>
+        <button 
+          onClick={() => scrollToSection('owner-message')} 
+          className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
+        >
           代表伊藤からのメッセージを見る
         </button>
       </div>
@@ -849,12 +856,14 @@ function MainComponent() {
               
               {/* CTAボタンを追加 */}
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8 sm:mt-12">
-                <Link 
-                  href="/contact" 
+                <a 
+                  href="https://lin.ee/3u7E6NY"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
                 >
                   応募する
-                </Link>
+                </a>
               </div>
             </div>
           </div>
@@ -872,7 +881,7 @@ function MainComponent() {
             <StaffCard 
               image="/image/st2.jpeg"
               name="峯 琴奈"
-              position="入社5年 / スタイリスト"
+              position="入社2年 / スタイリスト"
               message={`以前は、技術を学ぶ機会が限られていて、なかなか成長を実感できない環境でした。
                   時間に追われる毎日で、お客様一人一人と向き合う余裕もなく...`}
             />
@@ -880,7 +889,7 @@ function MainComponent() {
             <StaffCard 
               image="/image/st.jpeg"
               name="RINA"
-              position="入社13年 / スタイリスト"
+              position="入社11年 / スタイリスト"
               message={`ママ美容師として、大好きな美容師の仕事を続けていきたい気持ちと、
     子育ての時間を大切にしたい思いの間で悩んでいました...`}
             />
@@ -923,7 +932,7 @@ function MainComponent() {
                       <p className="font-medium mb-3">給与体系</p>
                       <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
                         <li>月給23万円～50万円 ※一律支給手当含む</li>
-                        <li>基本給：21万円～40万円</li>
+                        <li>基本給：21万円～</li>
                         <li>試用期間：2ヵ月間</li>
                       </ul>
                     </div>
@@ -943,7 +952,7 @@ function MainComponent() {
                       <p className="font-medium mb-3">給与例</p>
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <p className="text-sm text-gray-600 leading-relaxed">
-                          基本給210,000円＋固定残業手当20,000円（15時間未満/月）※残業時間を超過する場合は別途支給<br />
+                          基本給210,000円＋固定残業手当20,000円（18時間未満/月）※残業時間を超過する場合は別途支給<br />
                           ＋歩合給（売上の5〜10%）＋店販手当10%<br />
                           <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
                           総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円）
@@ -961,8 +970,7 @@ function MainComponent() {
                       <p className="font-medium mb-3">基本情報</p>
                       <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
                         <li>完全歩合制</li>
-                        <li>保障給：月額25万円（入社後2ヶ月間）</li>
-                        <li>基本給：20万円～150万円</li>
+                        <li>保障給：月額30万円（入社後6ヶ月間）</li>
                         <li>試用期間：2ヵ月間</li>
                       </ul>
                     </div>
@@ -971,7 +979,7 @@ function MainComponent() {
                       <p className="font-medium mb-3">歩合内容</p>
                       <div className="bg-gray-50 p-4 rounded-lg">
                         <ul className="space-y-2 text-sm text-gray-600">
-                          <li>技術売上（フリー・指名共通）：
+                          <li>技術売上（フリー・指名共通）（税抜）
                             <ul className="ml-4 space-y-1">
                               <li>～600,000円 → 50％</li>
                               <li>600,001～1,000,000円 → 55％</li>
@@ -1072,9 +1080,10 @@ function MainComponent() {
                 <div>
                   <p className="font-medium mb-2">その他制度</p>
                   <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    
                     <li>研修、セミナー参加の費用補助（内容に合わせて）</li>
-                    <li>社員旅行（希望者のみ全額会社負担）</li>
                     <li>社員割引（商品、技術割引あり）</li>
+                    <li>スタイルアップ・ブログ等のAI自動更新ツール使用可</li>
                   </ul>
                 </div>
               </div>
@@ -1163,7 +1172,7 @@ function MainComponent() {
   </div>
 </section>
 
-      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      <section id="owner-message" className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
         <SectionHeader 
           title="オーナー挨拶"
           subtitle="Message from Owner"
@@ -1174,7 +1183,7 @@ function MainComponent() {
               <div className="md:w-1/3 flex flex-col items-center text-center">
                 <div className="w-32 h-32 md:w-64 md:h-64 overflow-hidden rounded-full border-4 border-white shadow-md mb-6">
                   <Image
-                    src="/image/itou.jpeg"
+                    src="/image/itou1.png"
                     alt="オーナーの写真"
                     width={500}
                     height={500}
@@ -1249,8 +1258,8 @@ function MainComponent() {
               <p>営業時間：10:00-19:00（カット最終受付18:00）</p>
               <p>定休日：毎週月曜日</p>
               <div className="mt-4 w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3266.8876595456584!2d136.96893797670753!3d35.0511872726205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037a5df3259c45%3A0x3c160ce253aeea76!2z44CSNDU4LTA4NDQg5oSb55-l55yM5ZCN5Y-k5bGL5biC57eR5Yy65aWJ5rW35biC5rWB5ZCJ5b6M77yX77yW!5e0!3m2!1sja!2sjp!4v1711604961037!5m2!1sja!2sjp"
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6530.672073295563!2d136.9469809!3d35.0733357!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037dbbd88f363d%3A0xa666fcf643dec8e7!2zYW1iZXJs44CQ44Ki44Oz44OQ44O844Or44CR!5e0!3m2!1sja!2sjp!4v1743482289459!5m2!1sja!2sjp"
                   className="w-full h-full"
                   style={{ border: 0 }}
                   allowFullScreen=""
