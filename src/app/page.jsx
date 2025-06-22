@@ -518,7 +518,7 @@ function MainComponent() {
 
       <section className="py-16 md:py-24 mt-8 md:mt-12">
         <SectionHeader 
-          title="多くの美容師が抱える悩み事、当サロンでは一切致しません"
+          title={<>多くの美容師が抱える悩み事、<br />当サロンでは一切致しません</>}
           subtitle="現場で美容師を困らせがちな環境や課題"
           underlineColor="#9cc812"
         />
@@ -710,7 +710,7 @@ function MainComponent() {
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
@@ -738,7 +738,7 @@ function MainComponent() {
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
@@ -759,17 +759,17 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '300ms' }}
             >
-              <h3 className="text-2xl mb-4 font-bold">
+              <h3 className="text-lg md:text-2xl mb-4 font-bold">
                 生活の環境に応じて正社員、業務委託のシフトが可能
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
                   <Image
-                    src="/image/itaku.JPG"
+                    src="/image/newtokutyou.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
