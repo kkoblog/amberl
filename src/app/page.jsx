@@ -39,7 +39,7 @@ const SectionHeader2 = ({ title, subtitle }) => (
 // カラーパレットの定義
 const colors = {
   primary: {
-    bg: 'bg-[#b6aa98]',      // 新しい背景色
+    bg: 'bg-white',      // 背景色を白に変更
     text: 'text-[#4a4a4a]',  // ダークグレー
     accent: 'bg-[#9cc812]',  // 新しいアクセントカラー
   },
@@ -158,47 +158,84 @@ const StaffCard = ({ image, name, position, message }) => {
 // スライドショーコンポーネントを追加
 const ImageSlideshow = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFirstView, setIsFirstView] = useState(true);
+  const { ref: slideRef, inView } = useInView({
+    threshold: 0.2,
+    triggerOnce: false
+  });
+
   const images = [
+    {
+      src: "/image/t1.jpeg",
+      alt: "店内の様子"
+    },
+    {
+      src: "/image/t2.jpeg",
+      alt: "店内の様子"
+    },
+    {
+      src: "/image/t3.jpeg",
+      alt: "店内の様子"
+    },
+    {
+      src: "/image/t4.jpeg",
+      alt: "店内の様子"
+    },
     {
       src: "/image/gaikan1.JPG",
       alt: "外観の様子"
     },
-    {
-      src: "/image/tokutyou.jpeg",
-      alt: "店内の様子"
-    }
   ];
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000);
-
-    return () => clearInterval(timer);
-  }, []);
+    let timer;
+    if (inView) {
+      if (isFirstView) {
+        setIsFirstView(false);
+        timer = setTimeout(() => {
+          setCurrentImageIndex(1);
+          timer = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => 
+              prevIndex === images.length - 1 ? 0 : prevIndex + 1
+            );
+          }, 3000);
+        }, 1000);
+      } else {
+        timer = setInterval(() => {
+          setCurrentImageIndex((prevIndex) => 
+            prevIndex === images.length - 1 ? 0 : prevIndex + 1
+          );
+        }, 3000);
+      }
+    }
+    return () => {
+      clearTimeout(timer);
+      clearInterval(timer);
+    };
+  }, [inView, isFirstView, images.length]);
 
   return (
-    <div className="relative w-full aspect-[1/1] sm:aspect-[16/10] md:aspect-[16/9] lg:aspect-[1/1] overflow-hidden rounded-lg shadow-lg">
+    <div 
+      ref={slideRef}
+      className="relative w-full aspect-[16/9] overflow-hidden shadow-lg rounded-lg max-h-[600px]"
+    >
       {images.map((image, index) => (
         <div
           key={index}
           className={`absolute w-full h-full transition-all duration-1000 ${
             currentImageIndex === index 
               ? 'opacity-100 translate-x-0' 
-              : 'opacity-0 translate-x-full'
+              : index < currentImageIndex
+                ? 'opacity-0 -translate-x-full'
+                : 'opacity-0 translate-x-full'
           }`}
         >
           <Image
             src={image.src}
             alt={image.alt}
             fill
-            sizes="(max-width: 640px) 100vw,
-                   (max-width: 768px) 80vw,
-                   (max-width: 1024px) 70vw,
-                   60vw"
-            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="object-cover object-center rounded-lg"
             priority={index === 0}
             quality={85}
           />
@@ -210,10 +247,13 @@ const ImageSlideshow = () => {
         {images.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              currentImageIndex === index ? 'bg-white' : 'bg-white/50'
-            }`}
             onClick={() => setCurrentImageIndex(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              currentImageIndex === index 
+                ? 'bg-white scale-110' 
+                : 'bg-white/50 hover:bg-white/70'
+            }`}
+            aria-label={`スライド ${index + 1} へ移動`}
           />
         ))}
       </div>
@@ -223,6 +263,7 @@ const ImageSlideshow = () => {
 
 function MainComponent() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 各セクションのIntersectionObserverを設定
   const [conceptRef, conceptInView] = useInView({
@@ -338,7 +379,7 @@ function MainComponent() {
     });
 
     return (
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      <section className="py-16 md:py-24 bg-white">
         <SectionHeader 
           title="求める人材"
           subtitle="私たちと一緒に働きませんか？"
@@ -403,16 +444,7 @@ function MainComponent() {
 
           
 
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
-            <a 
-              href="https://lin.ee/3u7E6NY"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
-            >
-              応募する
-            </a>
-          </div>
+          
         </div>
       </section>
     );
@@ -425,177 +457,219 @@ function MainComponent() {
     rootMargin: '-10px' // マージンを小さくしてより早くトリガー
   });
 
+  // useEffectを追加（returnの前に配置）
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const scrollPercentage = (scrollPosition / windowHeight) * 100;
+
+      const elements = document.querySelectorAll('.opacity-0');
+      if (scrollPercentage >= 20) {
+        elements.forEach(element => {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="font-noto-sans relative">
-      <header className="bg-[#fafafa] py-8 md:py-16 px-4 overflow-hidden">
-        <div className="max-w-6xl mx-auto text-center">
-          
-          
-          <div className="relative">
+      {/* ヘッダー */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-center px-4 h-16">
+            <div className="text-xl font-bold">
+              amberl
+            </div>
+            {/* PC用ナビゲーション */}
+            <nav className="hidden md:block">
+              <ul className="flex space-x-8">
+                <li><a href="#concept" className="hover:text-[#D3B58D] transition-colors duration-300">amberlで働くことで得られる事</a></li>
+                <li><a href="#staff" className="hover:text-[#D3B58D] transition-colors duration-300">スタッフ紹介</a></li>
+                <li><a href="#requirements" className="hover:text-[#D3B58D] transition-colors duration-300">募集要項</a></li>
+                <li><a href="#qa" className="hover:text-[#D3B58D] transition-colors duration-300">よくある質問</a></li>
+                <li><a href="#owner-message" className="hover:text-[#D3B58D] transition-colors duration-300">オーナー挨拶</a></li>
+              </ul>
+            </nav>
+            {/* モバイル用ハンバーガーメニュー */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2"
+              aria-label="メニュー"
+            >
+              <div className="w-6 h-4 relative flex flex-col justify-between">
+                <span className={`w-full h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+                <span className={`w-full h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`w-full h-0.5 bg-black transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+              </div>
+            </button>
+          </div>
+        </div>
+        
+        {/* モバイル用メニュー */}
+        <div className={`md:hidden fixed top-16 left-0 right-0 bg-white shadow-lg transition-all duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+          <nav className="p-4">
+            <ul className="space-y-4">
+              <li><a href="#concept" className="block py-2" onClick={() => setIsMenuOpen(false)}>amberlで働くことで得られる事</a></li>
+              <li><a href="#staff" className="block py-2" onClick={() => setIsMenuOpen(false)}>スタッフ紹介</a></li>
+              <li><a href="#requirements" className="block py-2" onClick={() => setIsMenuOpen(false)}>募集要項</a></li>
+              <li><a href="#qa" className="block py-2" onClick={() => setIsMenuOpen(false)}>よくある質問</a></li>
+              <li><a href="#owner-message" className="block py-2" onClick={() => setIsMenuOpen(false)}>オーナー挨拶</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      {/* ファーストビュー */}
+      <div className="pt-16">
+        <div className="relative">
+          <div className="w-full">
             <Image
-              src="/image/naisou.jpg"
+              src="/image/top.jpeg"
               alt="明るく清潔感のあるサロン内装"
               width={1200}
               height={600}
-              className="w-full h-[350px] md:h-[500px] object-cover rounded-lg shadow-lg"
+              className="md:w-full md:h-[80vh] w-screen h-auto object-cover"
+              priority
             />
-            
-            <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
-              <div className="text-white px-4 md:px-8 text-center space-y-8">
-                <p className="text-lg md:text-3xl lg:text-4xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                ワークライフバランスは当たり前に、<br />
-                不器用な君の美容師人生を<br />見守っていきたい。<br />
+            {/* メッセージのオーバーレイ */}
+            <div className="absolute inset-0 flex items-center">
+              <div className="text-white px-0 md:px-12 ml-4 md:hidden"> {/* md:hidden を追加してPCでは非表示に */}
+                <h1 className="text-2xl md:text-3xl font-medium tracking-wider leading-relaxed mb-3 drop-shadow-lg">
+                  ワークライフバランスは<br />
+                  当たり前に。<br />
+                  不器用な君の美容師人生を<br />
+                  見守っていきたい。
+                </h1>
+              </div>
+            </div>
+            <Image
+              src="/image/zentai.jpeg"
+              alt="amberlスタッフ集合写真"
+              width={1200}
+              height={600}
+              className="md:w-full md:h-[80vh] w-screen h-auto object-cover"
+              priority
+            />
+          </div>
+        </div>
+        {/* メッセージセクション */}
+        <div className="py-12 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-12">
+              {/* 最初のメッセージ */}
+              <div className="text-left">
+                <h1 className="text-2xl md:text-3xl font-medium tracking-wider leading-relaxed mb-3 opacity-0 translate-y-10 transition-all duration-1000 ease-out" style={{ animationFillMode: 'forwards' }}>
+                  ワークライフバランスは<br />当たり前に。<br />
+                  不器用な君の美容師人生を<br />見守っていきたい。
+                </h1>
+              </div>
+
+              {/* 2番目のメッセージ */}
+              <div className="text-left">
+                <p className="text-base md:text-lg leading-loose tracking-wider opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-300" style={{ animationFillMode: 'forwards' }}>
+                  スタイリスト１年目で100名ほど<br />指名顧客獲得の実績があるから、<br />
+                  出遅れたことは一切気にせず<br />
+                  大好きな美容師の仕事ができるサロン。
                 </p>
-                
-                <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                スタイリスト１年目で100名ほど<br />指名顧客獲得の実績があるから、<br />
-                出遅れたことは一切気にせず<br />
-                大好きな美容師の仕事ができるサロン<br />
-                </p>
-                
-                <div className="relative">
-                  <p className="text-2xl md:text-4xl lg:text-5xl font-medium opacity-0 blur-sm" id="blurText">
-                    <span className="inline-block">amberl</span>
-                  </p>
-                  <style jsx>{`
-                    #blurText {
-                      animation: blurReveal 2s ease-out 2s forwards;
-                    }
-                    
-                    @keyframes blurReveal {
-                      0% {
-                        opacity: 0;
-                        filter: blur(10px);
-                      }
-                      100% {
-                        opacity: 1;
-                        filter: blur(0);
-                      }
-                    }
-                  `}</style>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
+
+      {/* 以降の既存のセクション */}
+
+      <section className="py-8 md:py-12 mt-4 md:mt-6 bg-white">
+        <div className="relative z-10">
+          <SectionHeader 
+            title={<>多くの美容師が抱える悩み事、<br />当サロンでは一切致しません</>}
+            subtitle="現場で美容師を困らせがちな環境や課題"
+            underlineColor="#D3B58D"
+          />
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="grid grid-cols-2 gap-2 md:gap-8">
+              {/* 左側: 一般的な美容室の悩み */}
+              <div className="p-2 md:p-6 rounded-lg h-full flex flex-col">
+                <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-gray-500">＜他店での悩み＞</h3>
+                <div className="flex flex-col items-center gap-2 md:gap-4 flex-grow">
+                  {[
+                    "「スタイリストになったのに...」\n先輩の手伝いばかりで、自分の入客の時間がもらえない💦",
+                    "「結婚後の生活が不安...」朝から夜遅くまで働き、勤務終了後は後輩の面倒を見ないといけない💦",
+                    "「技術を磨きたいのに...」\nシャンプー、ブロー、掃除に追われる毎日💦",
+                    "「こんなはずじゃなかった...」\n早く帰るスタッフは冷たい目で見られ、残業が当たり前の雰囲気💦",
+                    "「将来が見えない...」\n長時間労働で疲弊し、プライベートも充実できず、美容師としての成長も停滞💦"
+                  ].map((concern, index) => (
+                    <React.Fragment key={index}>
+                      <div className="border-2 border-gray-200 rounded-lg p-2 md:p-4 w-full text-left bg-white shadow-sm text-xs md:text-base leading-relaxed text-gray-600 min-h-[120px] md:min-h-[140px] flex items-center justify-start px-4 md:px-6 whitespace-pre-wrap">
+                        {concern}
+                      </div>
+                      {index < 4 && (
+                        <div className="text-gray-400 text-base md:text-2xl">
+                          ↓
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              </div>
+
+              {/* 右側: amberlの場合 */}
+              <div className="p-2 md:p-6 rounded-lg h-full flex flex-col">
+                <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-black">＜amberlの場合＞</h3>
+                <div className="flex flex-col items-center gap-2 md:gap-4 flex-grow">
+                  {[
+                    "あなたのワークバランスを考えた働き方を提案・提供✨ ",
+                    "マンツーマンでゆとりある働き方\n1日最大5名まで✨",
+                    "家族・プライベートの時間がつくれる\n完全週休2日制（毎週月曜＋希望日、土日休み可）✨",
+                    "ストレスフリーな生涯現役美容師ライフ\n社保完備、産休・育休取得率100%、時短勤務OK✨",
+                    "スタイリスト見習いでも安心の環境\n入社1年目でも月収25-30万円、入社初月70〜80名入客実績あり✨"
+                  ].map((solution, index) => (
+                    <React.Fragment key={index}>
+                      <div className="border-2 border-[#9cc812] rounded-lg p-2 md:p-4 w-full text-left bg-white shadow-sm text-xs md:text-base leading-relaxed min-h-[120px] md:min-h-[140px] flex items-center justify-start px-4 md:px-6 whitespace-pre-wrap">
+                        {solution}
+                      </div>
+                      {index < 4 && (
+                        <div className="text-[#9cc812] text-base md:text-2xl">
+                          ↓
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
-      </header>
-
-      
-
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
-        <a 
-          href="https://lin.ee/3u7E6NY"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
-        >
-          応募する
-        </a>
-        <button 
-          onClick={() => scrollToSection('owner-message')} 
-          className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
-        >
-          代表伊藤からのメッセージを見る
-        </button>
-      </div>
-
-      <section className="py-16 md:py-24 mt-8 md:mt-12 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/50"></div>
-        <div className="relative z-10 flex items-center justify-center">
-          <div className="px-4 max-w-6xl mx-auto">
-            <Image
-              src="/image/syuugou.jpg"
-              alt="amberlスタッフ集合写真"
-              width={1200}
-              height={800}
-              className="w-full h-auto rounded-lg shadow-lg"
-              priority
-            />
-          </div>
-        </div>
       </section>
 
-      <section className="py-16 md:py-24 mt-8 md:mt-12">
-        <SectionHeader 
-          title={<>多くの美容師が抱える悩み事、<br />当サロンでは一切致しません</>}
-          subtitle="現場で美容師を困らせがちな環境や課題"
-          underlineColor="#9cc812"
-        />
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 gap-2 md:gap-8">
-            {/* 左側: 一般的な美容室の悩み */}
-            <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-gray-500">＜他店での悩み＞</h3>
-              <div className="flex flex-col items-center gap-2 md:gap-4">
-                {[
-                  "「スタイリストになったのに...」\n先輩の手伝いばかりで、自分の入客の時間がもらえない💦",
-                  "「結婚後の生活が不安...」\n朝から夜遅くまで働き、勤務終了後は後輩の面倒を見ないといけない💦",
-                  "「技術を磨きたいのに...」\nシャンプー、ブロー、掃除に追われる毎日💦",
-                  "「こんなはずじゃなかった...」\n早く帰るスタッフは冷たい目で見られ、残業が当たり前の雰囲気💦",
-                  "「将来が見えない...」\n長時間労働で疲弊し、プライベートも充実できず、美容師としての成長も停滞💦"
-                ].map((concern, index) => (
-                  <React.Fragment key={index}>
-                    <div className="border-2 border-gray-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed text-gray-600">
-                      {concern}
-                    </div>
-                    {index < 4 && (
-                      <div className="text-gray-400 text-base md:text-2xl">
-                        ↓
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-
-            {/* 右側: amberlの場合 */}
-            <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-black">＜amberlの場合＞</h3>
-              <div className="flex flex-col items-center gap-2 md:gap-4">
-                {[
-                  "あなたのワークバランスを考えた働き方を提案・提供\n ",
-                  "マンツーマンでゆとりある働き方\n1日最大5名まで✨",
-                  "家族・プライベートの時間がつくれる\n完全週休2日制（毎週月曜＋希望日、土日休み可）✨",
-                  "ストレスフリーな生涯現役美容師ライフ\n社保完備、産休・育休取得率100%、時短勤務OK✨",
-                  "スタイリスト見習いでも安心の環境\n入社1年目でも月収25-30万円、入社初月70〜80名入客実績あり✨"
-                ].map((solution, index) => (
-                  <React.Fragment key={index}>
-                    <div className="border-2 border-[#9cc812] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm text-xs md:text-base leading-relaxed">
-                      {solution}
-                    </div>
-                    {index < 4 && (
-                      <div className="text-[#9cc812] text-base md:text-2xl">
-                        ↓
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="mt-4 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 p-6 md:p-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/50"></div>
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
         
+      {/* 特徴セクション */}
+      <div className="mt-4 bg-white relative overflow-hidden">
         <div className="relative z-10">
-        <SectionHeader 
-          title="amberlの特徴"
-          
-        />
-
+          <SectionHeader 
+            title="amberlの特徴"
+          />
          
-<div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
-  <div 
-    className={`max-w-lg mx-auto transition-all duration-1000 ${
-      featuresInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-    }`}
-  >
-    <ImageSlideshow />
-  </div>
-</div>
+          <div className="mt-8 md:mt-12">
+            <div 
+              className={`w-full max-w-4xl mx-auto transition-all duration-1000 ${
+                featuresInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
+            >
+              <ImageSlideshow />
+            </div>
+          </div>
 
           <br />
 
@@ -683,8 +757,108 @@ function MainComponent() {
         </div>
       </div>
 
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
+
+      {/* 使用商材セクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <SectionHeader 
+          title="使用商材"
+          subtitle="Products"
+        />
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 gap-3 md:gap-6">
+            {/* BYKALTE */}
+            <div className="bg-white border border-gray-100 overflow-hidden hover:border-gray-200 transition-all duration-300">
+              <div className="relative aspect-[16/9]">
+                <Image
+                  src="/image/baikarute.jpeg"
+                  alt="baikarute製品"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-2 md:p-4">
+                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">BYKALTE</h3>
+                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
+                  髪質、年齢、ライフスタイルに合わせた、オーダーメイドヘアケアブランド
+                </p>
+              </div>
+            </div>
+
+            {/* VILLA */}
+            <div className="bg-white border border-gray-100 overflow-hidden hover:border-gray-200 transition-all duration-300">
+              <div className="relative aspect-[16/9]">
+                <Image
+                  src="/image/violla.jpeg"
+                  alt="Villa製品"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-2 md:p-4">
+                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">Villa Lodola</h3>
+                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
+                  サロン専売品のトップブランド。高品質な製品を提供
+                </p>
+              </div>
+            </div>
+
+            {/* edol */}
+            <div className="bg-white border border-gray-100 overflow-hidden hover:border-gray-200 transition-all duration-300">
+              <div className="relative aspect-[16/9]">
+                <Image
+                  src="/image/edol.jpeg"
+                  alt="edol製品"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-2 md:p-4">
+                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">edol</h3>
+                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
+                  ファッショナブルで多彩なカラーバリエーションを提供
+                </p>
+              </div>
+            </div>
+
+            {/* 001 */}
+            <div className="bg-white border border-gray-100 overflow-hidden hover:border-gray-200 transition-all duration-300">
+              <div className="relative aspect-[16/9]">
+                <Image
+                  src="/image/001.jpeg"
+                  alt="001製品"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-2 md:p-4">
+                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">001</h3>
+                <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
+                  自然由来成分を贅沢に配合した、髪と地肌に優しいブランド
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 商材に関する追加情報 */}
+          <div className="mt-12 bg-white border border-gray-100 p-8">
+            <h4 className="text-lg font-bold mb-4">商材へのこだわり</h4>
+            <p className="text-gray-600 leading-relaxed">
+              amberlでは、お客様一人一人の髪質や好みに合わせて、
+              最適な商材を選定しています。スタイリスト各自が
+              使用したい商材を選べる環境を整えており、
+              より良い施術のために常に新しい商材も積極的に取り入れています。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
+
       {/* 得られることセクション */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      <section id="concept" className="py-16 md:py-24 bg-white">
         <SectionHeader 
           title="amberlで働くことで得られる事"
           subtitle="あなたらしい働き方"
@@ -759,8 +933,8 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '300ms' }}
             >
-              <h3 className="text-lg md:text-2xl mb-4 font-bold">
-                生活の環境に応じて正社員、業務委託のシフトが可能
+              <h3 className="text-2xl mb-4 font-bold">
+                生活の環境に応じて<br />正社員、業務委託のシフトが可能
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0">
@@ -782,96 +956,86 @@ function MainComponent() {
         </div>
       </section>
 
-      {/* 得られることと現場仕事の間の余白 */}
-      <div className="h-16 md:h-24"></div>
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
 
       {/* 現場仕事の日のとある1日セクション - 独立したセクションとして実装 */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-white/50"></div>
-        
+      <section className="py-12 md:py-16 bg-white relative overflow-hidden">
         <div className="relative z-10">
           <SectionHeader 
             title="現場仕事の日のとある1日"
           />
           
-          <div className="max-w-6xl mx-auto px-4">
-            <div className="max-w-2xl mx-auto">
-              <div className="space-y-6">
-                {[
-                  { time: "9:30", activity: "出勤、掃除" },
-                  { time: "10:00", activity: "オープン" },
-                  { time: "10:00-18:00", activity: "スタイリスト施術業務" },
-                  { 
-                    time: "ランチタイム", 
-                    activity: "カラーの放置時間や予約の空き時間を利用して、自由なタイミングで休憩",
-                    note: "※施術の合間に柔軟に取得可能"
-                  }
-                ].map((schedule, index) => (
-                  <div 
-                    key={index}
-                    className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6 p-4 sm:p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-[#D3B58D]"
-                  >
-                    <div className="w-full sm:w-28 flex-shrink-0 mb-2 sm:mb-0">
-                      <span className="font-bold text-[#D3B58D] text-sm sm:text-base">{schedule.time}</span>
-                    </div>
-                    <div className="flex-grow">
-                      <span className="text-gray-700 font-medium text-sm sm:text-base">{schedule.activity}</span>
-                      {schedule.note && (
-                        <span className="block text-xs sm:text-sm text-gray-500 mt-1 italic">{schedule.note}</span>
-                      )}
-                    </div>
+          <div className="max-w-4xl mx-auto px-4">
+            <div className="space-y-6">
+              {[
+                { time: "9:30", activity: "出勤、掃除" },
+                { time: "10:00", activity: "オープン" },
+                { time: "10:00-18:00", activity: "スタイリスト施術業務" },
+                { 
+                  time: "ランチタイム", 
+                  activity: "カラーの放置時間や予約の空き時間を利用して、自由なタイミングで休憩",
+                  note: "※施術の合間に柔軟に取得可能"
+                }
+              ].map((schedule, index) => (
+                <div 
+                  key={index}
+                  className="flex items-start gap-6 group hover:bg-gray-50 p-4 transition-all duration-300"
+                >
+                  <div className="w-24 flex-shrink-0">
+                    <span className="text-[#D3B58D] font-medium text-sm">{schedule.time}</span>
                   </div>
-                ))}
-
-                <div className="mt-8 p-4 sm:p-8 bg-white rounded-lg shadow-sm border border-[#D3B58D]/20">
-                  <h4 className="text-base sm:text-lg font-bold mb-4 text-[#D3B58D] border-b pb-2">1日の流れのポイント</h4>
-                  <div className="space-y-4 text-gray-700 text-sm sm:text-base">
-                    <div className="flex items-start">
-                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
-                      <p>
-                        <span className="font-medium">退勤時間</span><br />
-                        18:00〜19:00の間で、お客様の施術終了次第、簡単な掃除を行い退勤。
-                        その後の残業はありません。
-                      </p>
-                    </div>
-
-                    <div className="flex items-start">
-                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
-                      <p>
-                        マンツーマン制で、一日平均3〜5名のお客様を担当。
-                        メニューに応じて丁寧な施術時間を確保しています。
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <div className="w-1 h-full bg-[#D3B58D]/20 mr-2 sm:mr-4 rounded-full"></div>
-                      <p>
-                        お客様と親身に向き合い、丁寧な施術ができる環境を整えております。
-                        時間に追われることなく、質の高いサービスを提供できます。
-                      </p>
-                    </div>
+                  <div className="flex-grow">
+                    <div className="text-gray-800 text-sm font-medium">{schedule.activity}</div>
+                    {schedule.note && (
+                      <div className="text-xs text-gray-500 mt-1 italic">{schedule.note}</div>
+                    )}
                   </div>
                 </div>
-              </div>
-              
-              {/* CTAボタンを追加 */}
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8 sm:mt-12">
-                <a 
-                  href="https://lin.ee/3u7E6NY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
-                >
-                  応募する
-                </a>
+              ))}
+
+              <div className="mt-12 bg-gray-50 p-6">
+                <h4 className="text-base font-medium text-[#D3B58D] mb-4 pb-2 border-b border-[#D3B58D]/20">
+                  1日の流れのポイント
+                </h4>
+                <div className="space-y-4 text-gray-700 text-sm">
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-[#D3B58D] rounded-full mt-2"></div>
+                    <p>
+                      <span className="font-medium block mb-1">退勤時間</span>
+                      18:00〜19:00の間で、お客様の施術終了次第、簡単な掃除を行い退勤。
+                      その後の残業はありません。
+                    </p>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-[#D3B58D] rounded-full mt-2"></div>
+                    <p>
+                      マンツーマン制で、一日平均3〜5名のお客様を担当。
+                      メニューに応じて丁寧な施術時間を確保しています。
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="w-1 h-1 bg-[#D3B58D] rounded-full mt-2"></div>
+                    <p>
+                      お客様と親身に向き合い、丁寧な施術ができる環境を整えております。
+                      時間に追われることなく、質の高いサービスを提供できます。
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
-      <SectionHeader 
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
+
+      {/* スタッフ紹介セクション */}
+      <section id="staff" className="py-16 md:py-24 bg-white">
+        <SectionHeader 
           title="スタッフ紹介"
           subtitle="働く仲間"
         />
@@ -897,13 +1061,10 @@ function MainComponent() {
         </div>
       </section>
 
-      
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
 
-    
-
-<section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden">
-  <div className="absolute inset-0 bg-white/50"></div>
-  
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden" id="requirements" ref={requirementsRef}>
   <div className="relative z-10">
     <SectionHeader 
       title="募集要項"
@@ -923,23 +1084,21 @@ function MainComponent() {
           {
             title: "職種・給与",
             content: (
-              <div className="space-y-8">
-                {/* 正社員の情報 */}
-                <div className="border-l-4 border-[#D3B58D] pl-4">
-                  <h3 className="text-lg font-bold mb-4 text-[#D3B58D]">正社員</h3>
-                  <div className="space-y-6">
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-bold text-lg mb-4 text-[#D3B58D]">正社員</h4>
+                  <div className="space-y-4">
                     <div>
-                      <p className="font-medium mb-3">給与体系</p>
-                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <h5 className="font-medium mb-2">給与体系</h5>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
                         <li>月給23万円～50万円 ※一律支給手当含む</li>
                         <li>基本給：21万円～</li>
                         <li>試用期間：2ヵ月間</li>
                       </ul>
                     </div>
-                    
                     <div>
-                      <p className="font-medium mb-3">手当・賞与</p>
-                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <h5 className="font-medium mb-2">手当・賞与</h5>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
                         <li>通勤手当：5,000円～2万円（通勤距離に応じて）</li>
                         <li>役職手当：1万円～3万円（役職により変動）</li>
                         <li>住宅手当：5,000円～2万円（住宅条件により変動）</li>
@@ -947,65 +1106,50 @@ function MainComponent() {
                         <li>賞与・昇給：あり</li>
                       </ul>
                     </div>
-
                     <div>
-                      <p className="font-medium mb-3">給与例</p>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          基本給210,000円＋固定残業手当20,000円（18時間未満/月）※残業時間を超過する場合は別途支給<br />
-                          ＋歩合給（売上の5〜10%）＋店販手当10%<br />
-                          <span className="mt-2 block font-medium">例）技術売上900,000円、店販売上100,000円の場合</span>
-                          総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円）
-                        </p>
-                      </div>
+                      <h5 className="font-medium mb-2">給与例</h5>
+                      <p className="text-gray-600">基本給210,000円＋固定残業手当20,000円（18時間未満/月）※残業時間を超過する場合は別途支給<br />
+                      ＋歩合給（売上の5〜10%）＋店販手当10%</p>
+                      <p className="text-gray-600 mt-2">例）技術売上900,000円、店販売上100,000円の場合<br />
+                      総支給300,000円（基本給210,000円＋固定残業手当20,000円＋歩合給45,000円＋店販手当10,000円）</p>
                     </div>
                   </div>
                 </div>
 
-                {/* 業務委託の情報 */}
-                <div className="border-l-4 border-[#4a90e2] pl-4">
-                  <h3 className="text-lg font-bold mb-4 text-[#4a90e2]">業務委託</h3>
-                  <div className="space-y-6">
+                <div>
+                  <h4 className="font-bold text-lg mb-4 text-[#D3B58D]">業務委託</h4>
+                  <div className="space-y-4">
                     <div>
-                      <p className="font-medium mb-3">基本情報</p>
-                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <h5 className="font-medium mb-2">基本情報</h5>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
                         <li>完全歩合制</li>
                         <li>保障給：月額30万円（入社後6ヶ月間）</li>
                         <li>試用期間：2ヵ月間</li>
                       </ul>
                     </div>
-
                     <div>
-                      <p className="font-medium mb-3">歩合内容</p>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <ul className="space-y-2 text-sm text-gray-600">
-                          <li>技術売上（フリー・指名共通）（税抜）
-                            <ul className="ml-4 space-y-1">
-                              <li>～600,000円 → 50％</li>
-                              <li>600,001～1,000,000円 → 55％</li>
-                              <li>1,000,001～1,500,000円 → 60％</li>
-                              <li>1,500,001円～ → 65％</li>
-                            </ul>
-                          </li>
-                          <li>店販売上：10%</li>
-                          <li>指名料売上：100%（料金は要相談）</li>
-                        </ul>
-                      </div>
+                      <h5 className="font-medium mb-2">歩合内容</h5>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>技術売上（フリー・指名共通）（税抜）
+                          <ul className="list-none mt-2 space-y-1">
+                            <li>～600,000円 → 50％</li>
+                            <li>600,001～1,000,000円 → 55％</li>
+                            <li>1,000,001～1,500,000円 → 60％</li>
+                            <li>1,500,001円～ → 65％</li>
+                          </ul>
+                        </li>
+                        <li>店販売上：10%</li>
+                        <li>指名料売上：100%（料金は要相談）</li>
+                      </ul>
                     </div>
-
                     <div>
-                      <p className="font-medium mb-3">給与例</p>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          例）技術売上1,000,000円、店販売上100,000円の場合<br />
-                          総支給560,000円（歩合給550,000円＋店販手当10,000円）
-                        </p>
-                      </div>
+                      <h5 className="font-medium mb-2">給与例</h5>
+                      <p className="text-gray-600">例）技術売上1,000,000円、店販売上100,000円の場合<br />
+                      総支給560,000円（歩合給550,000円＋店販手当10,000円）</p>
                     </div>
-
                     <div>
-                      <p className="font-medium mb-3">費用負担</p>
-                      <ul className="list-disc list-inside ml-4 text-gray-600 space-y-2">
+                      <h5 className="font-medium mb-2">費用負担</h5>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-600">
                         <li>ブース代：330円×入客数/月</li>
                         <li>消耗品材料費：技術売上の5～10%程度</li>
                         <li>タオル代：技術売上×0.5%/月</li>
@@ -1020,18 +1164,18 @@ function MainComponent() {
             title: "勤務時間",
             content: (
               <div className="space-y-4">
-                <div className="mb-4">
-                  <h4 className="font-medium mb-2">正社員</h4>
-                  <p>09:30 - 19:00（所定勤務7-8時間／固定時間制）</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                <div>
+                  <h5 className="font-medium mb-2">正社員</h5>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <li>09:30 - 19:00（所定勤務7-8時間／固定時間制）</li>
                     <li>週5勤務</li>
                     <li>18時以降予約がなければ帰宅可</li>
                     <li>残業なし</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">業務委託</h4>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <h5 className="font-medium mb-2">業務委託</h5>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
                     <li>週5勤務（時短、週4勤務も相談可）</li>
                     <li>勤務時間は応相談</li>
                   </ul>
@@ -1043,17 +1187,17 @@ function MainComponent() {
             title: "休日・休暇",
             content: (
               <div className="space-y-4">
+                <p className="font-medium">年間休日数：110日</p>
                 <div>
-                  <p className="font-medium mb-2">年間休日数：110日</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
                     <li>完全週休2日制</li>
                     <li>土日休みOK</li>
                     <li>日曜休みOK</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="font-medium mb-2">休暇制度</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <h5 className="font-medium mb-2">休暇制度</h5>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
                     <li>年末年始休暇（12/31、1/1.2.3.4）</li>
                     <li>夏季休暇（2日間 ※年間どこでも使用可、1日ずつの使用可）</li>
                     <li>冬季休暇（12/31、1/1.2.3.4）</li>
@@ -1068,19 +1212,18 @@ function MainComponent() {
           {
             title: "福利厚生",
             content: (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div>
-                  <p className="font-medium mb-2">社会保険・手当 ※社員のみ</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                  <h5 className="font-medium mb-2">社会保険・手当 ※社員のみ</h5>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
                     <li>社会保険完備</li>
                     <li>通勤手当支給</li>
                     <li>住宅手当支給</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="font-medium mb-2">その他制度</p>
-                  <ul className="list-disc list-inside space-y-1 text-gray-600">
-                    
+                  <h5 className="font-medium mb-2">その他制度</h5>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
                     <li>研修、セミナー参加の費用補助（内容に合わせて）</li>
                     <li>社員割引（商品、技術割引あり）</li>
                     <li>スタイルアップ・ブログ等のAI自動更新ツール使用可</li>
@@ -1088,7 +1231,7 @@ function MainComponent() {
                 </div>
               </div>
             )
-          },
+          }
         ].map((item, index) => (
           <div 
             key={index}
@@ -1096,7 +1239,7 @@ function MainComponent() {
               index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
             }`}
           >
-            <div className="w-full md:w-1/4 p-4 md:p-6 bg-[#D3B58D]/5">
+                  <div className="w-full md:w-1/4 p-4 md:p-6">
               <h4 className="font-bold text-gray-800">{item.title}</h4>
             </div>
             <div className="w-full md:w-3/4 p-4 md:p-6">
@@ -1109,19 +1252,16 @@ function MainComponent() {
           </div>
         ))}
       </div>
-
-      
     </div>
   </div>
 </section>
 
-
-
       <RequirementSection />
 
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 relative overflow-hidden" id="qa" ref={qaRef}>
-  <div className="absolute inset-0 bg-white/50"></div>
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
   
+      <section className="py-16 md:py-24 bg-white relative overflow-hidden" id="qa" ref={qaRef}>
   <div className="relative z-10">
     <SectionHeader 
       title="よくあるご質問"
@@ -1172,7 +1312,11 @@ function MainComponent() {
   </div>
 </section>
 
-      <section id="owner-message" className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      {/* セクション間のセパレーター */}
+      <div className="w-full h-4 bg-white"></div>
+
+      <section id="owner-message" className="py-12 md:py-24 bg-white">
+        <div className="relative z-10">
         <SectionHeader 
           title="オーナー挨拶"
           subtitle="Message from Owner"
@@ -1220,6 +1364,7 @@ function MainComponent() {
                       ご応募後、是非一度お話を聞きにいらしてください。
                     </span>
                   </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1227,10 +1372,9 @@ function MainComponent() {
         </div>
       </section>
 
-      <footer className="bg-[#333] text-white py-8 md:py-16 px-4">
+      <footer className="bg-[#333] text-white py-8 md:py-16 px-4 relative"> {/* relative を追加 */}
         <div className="max-w-6xl mx-auto">
-          
-          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 pb-20"> {/* pb-20 を追加してボタンのスペースを確保 */}
             <div>
               <h3 className="text-xl mb-4 flex items-center">
                 <i className="fab fa-instagram text-2xl mr-2"></i>
@@ -1248,7 +1392,6 @@ function MainComponent() {
                     <span className="text-sm ml-2">サロン公式</span>
                   </a>
                 </div>
-                
               </div>
             </div>
             <div>
@@ -1259,7 +1402,7 @@ function MainComponent() {
               <p>定休日：毎週月曜日</p>
               <div className="mt-4 w-full h-[400px] rounded-lg overflow-hidden shadow-lg">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6530.672073295563!2d136.9469809!3d35.0733357!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037dbbd88f363d%3A0xa666fcf643dec8e7!2zYW1iZXJs44CQ44Ki44Oz44OQ44O844Or44CR!5e0!3m2!1sja!2sjp!4v1743482289459!5m2!1sja!2sjp"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6530.672073295563!2d136.9469809!3d35.0733357!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60037dbbd88f363d%3A0xa666fcf643dec8e7!2samberl%E3%80%90%E3%82%A2%E3%83%B3%E3%83%90%E3%83%BC%E3%83%AB%E3%80%91!5e0!3m2!1sja!2sjp!4v1743482289459!5m2!1sja!2sjp"
                   className="w-full h-full"
                   style={{ border: 0 }}
                   allowFullScreen=""
@@ -1271,33 +1414,20 @@ function MainComponent() {
               </div>
             </div>
           </div>
-          
         </div>
+
+        {/* 追従するCTAボタン - フッター内の最後に配置 */}
+        <a 
+          href="https://lin.ee/3u7E6NY"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-[#06c755] text-white py-4 shadow-lg hover:bg-[#059144] transition-all duration-300 flex items-center justify-center space-x-2 w-full"
+        >
+          <span className="text-base font-medium">応募する</span>
+        </a>
       </footer>
 
-      {/* トップへ戻るボタン */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-4 right-4 z-40 bg-gray-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-600 transition-all duration-300 ${
-          showScrollTop ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-        aria-label="トップへ戻る"
-      >
-        <svg 
-          className="w-6 h-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 15l7-7 7 7"
-          />
-        </svg>
-      </button>
+      
     </div>
   );
 }

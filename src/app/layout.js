@@ -1,7 +1,11 @@
-import { Inter } from 'next/font/google'
+import { Noto_Serif_JP } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const notoSerifJP = Noto_Serif_JP({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'amberl ストレスフリーな美容師ライフ',
@@ -17,7 +21,7 @@ export default function RootLayout({ children }) {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={notoSerifJP.className}>{children}</body>
     </html>
   )
 }
