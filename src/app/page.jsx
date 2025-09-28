@@ -222,13 +222,17 @@ const ImageSlideshow = () => {
       {images.map((image, index) => (
         <div
           key={index}
-          className={`absolute w-full h-full transition-all duration-1000 ${
-            currentImageIndex === index 
-              ? 'opacity-100 translate-x-0' 
+          className={`absolute w-full h-full transition-transform duration-700 ease-in-out ${
+            index === currentImageIndex 
+              ? 'translate-x-0 opacity-100 visible' 
               : index < currentImageIndex
-                ? 'opacity-0 -translate-x-full'
-                : 'opacity-0 translate-x-full'
+                ? '-translate-x-full opacity-0 invisible'
+                : 'translate-x-full opacity-0 invisible'
           }`}
+          style={{
+            zIndex: index === currentImageIndex ? 1 : 0,
+            transitionProperty: 'transform, opacity, visibility'
+          }}
         >
           <Image
             src={image.src}
@@ -262,7 +266,6 @@ const ImageSlideshow = () => {
 };
 
 function MainComponent() {
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 各セクションのIntersectionObserverを設定
@@ -291,25 +294,6 @@ function MainComponent() {
     threshold: 0.2,
     rootMargin: '-50px'
   });
-
-  // スクロール位置を監視して、ボタンの表示/非表示を制御
-  useEffect(() => {
-    const handleScroll = () => {
-      // 100px以上スクロールしたらボタンを表示
-      setShowScrollTop(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // トップへスクロール
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -464,12 +448,27 @@ function MainComponent() {
       const windowHeight = window.innerHeight;
       const scrollPercentage = (scrollPosition / windowHeight) * 100;
 
-      const elements = document.querySelectorAll('.opacity-0');
+      // メインコンテンツのアニメーション
+      const elements = document.querySelectorAll('.opacity-0:not(.instagram-tab)');
       if (scrollPercentage >= 20) {
         elements.forEach(element => {
           element.style.opacity = '1';
           element.style.transform = 'translateY(0)';
         });
+      }
+
+      // インスタグラムタブの表示制御
+      const instagramTab = document.querySelector('.instagram-tab');
+      if (instagramTab) {
+        if (scrollPosition > windowHeight * 0.8) { // 画面の80%以上スクロールしたら表示
+          instagramTab.style.opacity = '1';
+          instagramTab.style.visibility = 'visible';
+          instagramTab.style.transform = 'translateX(calc(100% - 40px))';
+        } else {
+          instagramTab.style.opacity = '0';
+          instagramTab.style.visibility = 'hidden';
+          instagramTab.style.transform = 'translateX(100%)';
+        }
       }
     };
 
@@ -525,6 +524,17 @@ function MainComponent() {
         </div>
       </header>
 
+      {/* インスタグラムリンクタブ（モバイル用） */}
+      <a
+        href="https://www.instagram.com/amberl202467"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="instagram-tab fixed top-20 right-0 z-50 bg-gradient-to-tr from-[#FFD600] via-[#FF7A00] via-[#FF0069] via-[#D300C5] to-[#7638FA] text-white p-3 rounded-l-lg shadow-lg transform translate-x-full hover:translate-x-0 transition-all duration-300 md:hidden opacity-0 invisible"
+        style={{ animationFillMode: 'forwards' }}
+      >
+        <i className="fab fa-instagram text-2xl"></i>
+      </a>
+
       {/* ファーストビュー */}
       <div className="pt-16">
         <div className="relative">
@@ -540,11 +550,11 @@ function MainComponent() {
             {/* メッセージのオーバーレイ */}
             <div className="absolute inset-0 flex items-center">
               <div className="text-white px-0 md:px-12 ml-4 md:hidden"> {/* md:hidden を追加してPCでは非表示に */}
-                <h1 className="text-2xl md:text-3xl font-medium tracking-wider leading-relaxed mb-3 drop-shadow-lg">
-                  ワークライフバランスは<br />
-                  当たり前に。<br />
-                  不器用な君の美容師人生を<br />
-                  見守っていきたい。
+                <h1 className="text-2xl md:text-3xl font-medium tracking-wider leading-relaxed mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-shadow-strong">
+                  “ストレスフリーな美容師LIFE“<br />
+                  美容師として輝きながら、<br />
+                  プライベートも大切に。<br />
+                  自分の理想的な美容師人生へ。
                 </h1>
               </div>
             </div>
@@ -565,17 +575,18 @@ function MainComponent() {
               {/* 最初のメッセージ */}
               <div className="text-left">
                 <h1 className="text-2xl md:text-3xl font-medium tracking-wider leading-relaxed mb-3 opacity-0 translate-y-10 transition-all duration-1000 ease-out" style={{ animationFillMode: 'forwards' }}>
-                  ワークライフバランスは<br />当たり前に。<br />
-                  不器用な君の美容師人生を<br />見守っていきたい。
+                “ストレスフリーな美容師LIFE“<br />
+                美容師として輝きながら、<br />
+                  プライベートも大切に。<br />
+                  自分の理想的な美容師人生へ。
                 </h1>
               </div>
 
               {/* 2番目のメッセージ */}
               <div className="text-left">
                 <p className="text-base md:text-lg leading-loose tracking-wider opacity-0 translate-y-10 transition-all duration-1000 ease-out delay-300" style={{ animationFillMode: 'forwards' }}>
-                  スタイリスト１年目で100名ほど<br />指名顧客獲得の実績があるから、<br />
-                  出遅れたことは一切気にせず<br />
-                  大好きな美容師の仕事ができるサロン。
+                  安心して自分らしい働き方を実現<br />
+                  大好きな美容師の仕事が、<br />長く続けられるサロン。
                 </p>
               </div>
             </div>
@@ -652,8 +663,8 @@ function MainComponent() {
       </section>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
-        
+      <div className="w-full h-16 bg-white"></div>
+
       {/* 特徴セクション */}
       <div className="mt-4 bg-white relative overflow-hidden">
         <div className="relative z-10">
@@ -710,7 +721,9 @@ function MainComponent() {
               style={{ transitionDelay: '300ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">②</span>
-              ワークライフバランスを考えた働き方ができます
+              ワークライフバランスを
+              <br />
+              考えた働き方ができます
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
@@ -758,7 +771,7 @@ function MainComponent() {
       </div>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-16 bg-white"></div>
 
       {/* 使用商材セクション */}
       <section className="py-16 md:py-24 bg-white">
@@ -781,7 +794,7 @@ function MainComponent() {
               <div className="p-2 md:p-4">
                 <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">BYKALTE</h3>
                 <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-                  髪質、年齢、ライフスタイルに合わせた、オーダーメイドヘアケアブランド
+                株式会社ホーユープロフェッショナルが展開するヘアケアブランド。ダメージ補修に特化したトリートメント。
                 </p>
               </div>
             </div>
@@ -799,7 +812,9 @@ function MainComponent() {
               <div className="p-2 md:p-4">
                 <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">Villa Lodola</h3>
                 <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-                  サロン専売品のトップブランド。高品質な製品を提供
+                イタリア・ウンブリア州に広がる有機栽培農場。その地で生まれたプロユース専門メーカーKemon社のオーガニックブランド。
+
+
                 </p>
               </div>
             </div>
@@ -817,7 +832,7 @@ function MainComponent() {
               <div className="p-2 md:p-4">
                 <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">edol</h3>
                 <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-                  ファッショナブルで多彩なカラーバリエーションを提供
+                タカラベルモントの理美容室専売ヘアカラーブランド「LebeL」の製品。透明感のあるヘアカラーを実現する次世代型カラー剤。
                 </p>
               </div>
             </div>
@@ -833,9 +848,10 @@ function MainComponent() {
                 />
               </div>
               <div className="p-2 md:p-4">
-                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">001</h3>
+                <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2">エンシャンテッド</h3>
                 <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-                  自然由来成分を贅沢に配合した、髪と地肌に優しいブランド
+                  頭皮と髪のリセットに拘った自社ブランドのシャンプー・トリートメント。
+                
                 </p>
               </div>
             </div>
@@ -855,7 +871,7 @@ function MainComponent() {
       </section>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
 
       {/* 得られることセクション */}
       <section id="concept" className="py-16 md:py-24 bg-white">
@@ -884,7 +900,7 @@ function MainComponent() {
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-sm object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
@@ -912,7 +928,7 @@ function MainComponent() {
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-sm object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
@@ -943,7 +959,7 @@ function MainComponent() {
                     alt="スタッフの様子"
                     width={400}
                     height={300}
-                    className="w-full h-[300px] md:h-[300px] rounded-lg object-cover"
+                    className="w-full h-[300px] md:h-[300px] rounded-sm object-cover"
                   />
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
@@ -957,7 +973,7 @@ function MainComponent() {
       </section>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
 
       {/* 現場仕事の日のとある1日セクション - 独立したセクションとして実装 */}
       <section className="py-12 md:py-16 bg-white relative overflow-hidden">
@@ -1019,7 +1035,7 @@ function MainComponent() {
                   <div className="flex items-start gap-3">
                     <div className="w-1 h-1 bg-[#D3B58D] rounded-full mt-2"></div>
                     <p>
-                      お客様と親身に向き合い、丁寧な施術ができる環境を整えております。
+                      お客様と親身に向き合い、丁寧な施術ができる環境を整えており、
                       時間に追われることなく、質の高いサービスを提供できます。
                     </p>
                   </div>
@@ -1031,7 +1047,7 @@ function MainComponent() {
       </section>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
 
       {/* スタッフ紹介セクション */}
       <section id="staff" className="py-16 md:py-24 bg-white">
@@ -1061,8 +1077,10 @@ function MainComponent() {
         </div>
       </section>
 
+    
+
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
 
       <section className="py-16 md:py-24 bg-white relative overflow-hidden" id="requirements" ref={requirementsRef}>
   <div className="relative z-10">
@@ -1259,7 +1277,7 @@ function MainComponent() {
       <RequirementSection />
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
   
       <section className="py-16 md:py-24 bg-white relative overflow-hidden" id="qa" ref={qaRef}>
   <div className="relative z-10">
@@ -1313,7 +1331,7 @@ function MainComponent() {
 </section>
 
       {/* セクション間のセパレーター */}
-      <div className="w-full h-4 bg-white"></div>
+      <div className="w-full h-2 bg-white"></div>
 
       <section id="owner-message" className="py-12 md:py-24 bg-white">
         <div className="relative z-10">
@@ -1383,7 +1401,7 @@ function MainComponent() {
               <div className="flex flex-col space-y-4">
                 <div className="flex space-x-4">
                   <a 
-                    href="https://www.instagram.com/amberl202467/" 
+                    href="https://www.instagram.com/amberl202467" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-2xl hover:text-[#4a90e2]"
@@ -1426,6 +1444,8 @@ function MainComponent() {
           <span className="text-base font-medium">応募する</span>
         </a>
       </footer>
+
+      
 
       
     </div>

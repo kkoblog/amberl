@@ -21,6 +21,9 @@ module.exports = {
       },
       animation: {
         fadeIn: 'fadeIn 1.5s ease-out forwards',
+      },
+      textShadow: {
+        'strong': '2px 2px 4px rgba(0, 0, 0, 0.8), -1px -1px 3px rgba(0, 0, 0, 0.8)',
       }
     }
   },
