@@ -119,6 +119,32 @@ const StaffCard = ({ image, name, position, message }) => {
   </span>
 </p>
             </>
+          ) : name === "寺井 綾希" ? (
+            <>
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="font-bold text-[#D3B58D]">学んだこと</span>
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+                  スタイリストそれぞれ得意なスタイルが違うので、参考になる事も多くやり方やアドバイスなど聞ける環境です。
+                </span>
+              </p>
+
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="font-bold text-[#D3B58D]">お店の雰囲気</span>
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+                  店内は木と植物がたくさんで落ち着いた雰囲気で、新規のお客様にもよく褒められます。
+                  大人女性が多いけどお話が盛り上がっていると賑やかになっていることも。
+                </span>
+              </p>
+
+              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="font-bold text-[#D3B58D]">求人を見ている方に一言</span>
+                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
+                  私は以前の職場よりもゆったり仕事をして売上は1.5倍になりました。
+                  自分の得意を活かした技術メニュー(クーポン)を作れます。
+                  スタッフの仲がいいですが、飲み会とかは自分の意思を尊重してもらえるので気を遣うこともありません。
+                </span>
+              </p>
+            </>
           ) : (
             <>
               <p className="text-gray-700 leading-relaxed mb-6">
@@ -1067,11 +1093,10 @@ function MainComponent() {
             />
             
             <StaffCard 
-              image="/image/st.jpeg"
-              name="RINA"
-              position="入社11年 / スタイリスト"
-              message={`ママ美容師として、大好きな美容師の仕事を続けていきたい気持ちと、
-    子育ての時間を大切にしたい思いの間で悩んでいました...`}
+              image="/image/terai.jpeg"
+              name="寺井 綾希"
+              position="スタイリスト"
+              message={`オーナーの「不安な技術も責任持って指導します！」の一言が心強く、入社を決意しました。完全週休二日制で予約がない日は定時前に帰宅できるため、自分に余裕ができました。`}
             />
           </div>
         </div>
