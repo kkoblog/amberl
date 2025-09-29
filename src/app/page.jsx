@@ -230,7 +230,7 @@ const ImageSlideshow = () => {
   return (
     <div 
       ref={slideRef}
-      className="relative w-full aspect-[16/9] overflow-hidden shadow-lg rounded-lg max-h-[600px]"
+      className="relative w-full aspect-[16/9] overflow-hidden shadow-lg max-h-[600px]"
     >
       {images.map((image, index) => (
         <div
@@ -252,7 +252,7 @@ const ImageSlideshow = () => {
             alt={image.alt}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
-            className="object-cover object-center rounded-lg"
+            className="object-cover object-center"
             priority={index === 0}
             quality={85}
           />
