@@ -121,31 +121,44 @@ const StaffCard = ({ image, name, position, message }) => {
             </>
           ) : (
             <>
+
               <p className="text-gray-700 leading-relaxed mb-6">
-                <span className="font-bold text-[#D3B58D]">amberlに入社したきっかけは</span>、
+                <span className="font-bold text-[#D3B58D]">学んだこと</span>
                 <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
-                  自宅からも保育園からも通いやすく、オーナーさん自身もお子さんがいらっしゃるので、子育てをしながらの仕事に理解があると考えたからです。
+                  スタイリストそれぞれが得意とするスタイルが異なるため、お互いのテクニックやアプローチ方法を学び合える環境です。
+                  気軽にアドバイスを求められる雰囲気があり、日々新しい発見があります。
                 </span>
               </p>
 
               <p className="text-gray-700 leading-relaxed mb-6">
-                <span className="border-b-2 border-[#D3B58D]">
-                  お客様とマンツーマンということもあり、施術の時間配分やお客様との関わり方がとても勉強になりました。
-                </span>
-              </p>
-
-              <p className="text-gray-700 leading-relaxed mb-6">
+                <span className="font-bold text-[#D3B58D]">お店の雰囲気</span>
                 <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
-                  お客様も長くご来店いただいている方が多く、お客様ともスタッフ同士も仲が良いです。
-                  また分からないところはしっかりと教えていただけるので安心して働けています。
+                  店内には木と植物がたくさんあり、落ち着いた雰囲気が特徴です。
+                  新規のお客様からも「リラックスできる空間ですね」と嬉しいお言葉をいただいています。
+                  大人女性のお客様が中心で、普段は落ち着いた雰囲気ですが、楽しい会話で盛り上がると自然と明るく賑やかな空間に。
+                  そんなメリハリのある雰囲気も魅力の一つです。
                 </span>
               </p>
 
               <p className="text-gray-700 leading-relaxed mb-6">
-                <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block">
-                  子供がいるスタッフも多く、育児をしながらの仕事もとても理解があるあたたかいサロンです。
-                  自分に合った働き方でプライベートも仕事もしっかり充実させられるサロンですので、是非一緒に働きましょう！
-                </span>
+                <span className="font-bold text-[#D3B58D]">求人を見ている方に一言</span>
+                <div className="space-y-3 bg-[#D3B58D]/10 px-2 py-1 rounded mt-1">
+                  <p className="flex items-start">
+                    
+                    <span>
+                      以前の職場と比べてゆったりとした働き方になったにも関わらず、売上は1.5倍に伸びました。
+                      心に余裕を持って働けることで、より良い施術ができています。
+                    </span>
+                  </p>
+                  <p className="pl-4 border-l-2 border-[#D3B58D]/20">
+                    自分の得意分野を活かした技術メニューやクーポンを自由に提案できる環境があり、
+                    スタイリストとしての創造性を発揮できます。
+                  </p>
+                  <p className="pl-4 border-l-2 border-[#D3B58D]/20">
+                    スタッフ同士の仲が良く、飲み会などのイベントも参加は完全に自由。
+                    一人一人の意思が尊重される働きやすい環境です。
+                  </p>
+                </div>
               </p>
             </>
           )}
@@ -217,7 +230,7 @@ const ImageSlideshow = () => {
   return (
     <div 
       ref={slideRef}
-      className="relative w-full aspect-[16/9] overflow-hidden shadow-lg max-h-[600px]"
+      className="relative w-full aspect-[16/9] overflow-hidden shadow-lg rounded-lg max-h-[600px]"
     >
       {images.map((image, index) => (
         <div
@@ -239,7 +252,7 @@ const ImageSlideshow = () => {
             alt={image.alt}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
-            className="object-cover object-center"
+            className="object-cover object-center rounded-lg"
             priority={index === 0}
             quality={85}
           />
@@ -1067,11 +1080,10 @@ function MainComponent() {
             />
             
             <StaffCard 
-              image="/image/st.jpeg"
-              name="RINA"
+              image="/image/terai.jpeg"
+              name="寺井 綾希 "
               position="入社⚫︎年 / スタイリスト"
-              message={`ママ美容師として、大好きな美容師の仕事を続けていきたい気持ちと、
-    子育ての時間を大切にしたい思いの間で悩んでいました...`}
+              message={`「不安な技術も責任持って指導します！」\nそんなオーナーの一言に心強さを感じ、入社を決意しました。\n\n完全週休二日制に加えて、予約のない日は定時前に帰宅できるため、\n自分の時間に余裕が持てるようになりました。`}
             />
           </div>
         </div>
