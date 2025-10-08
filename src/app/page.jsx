@@ -985,6 +985,70 @@ function MainComponent() {
         </div>
       </section>
 
+      {/* 現場実績セクション */}
+      <section className="py-16 md:py-24 bg-white">
+        <SectionHeader 
+          title="現場実績"
+          subtitle="実際の成果"
+        />
+        
+        {/* 実績説明文 */}
+        <div className="max-w-4xl mx-auto px-4 mb-8">
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <p className="text-left text-gray-700 leading-relaxed text-sm">
+              これらの実績は、当サロンで働くスタッフの実際の成果です。<br />
+              完全週休2日制という働き方でも、十分な収入を得ることができる環境を整えています。<br />
+              あなたも同じような成果を目指してみませんか？
+            </p>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {/* 実績① */}
+            <div className="text-center group">
+              <div className="mb-6">
+              </div>
+              <div className="flex items-start mb-3">
+                <div className="bg-[#9cc812] text-white text-xs font-bold px-2 py-1 mr-3 flex-shrink-0">
+                  実績①
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">入社3ヶ月で売上100万円達成</h3>
+              </div>
+              <p className="text-sm text-gray-500 mb-4">完全週休2日</p>
+              <div className="w-12 h-0.5 bg-[#D3B58D] mx-auto"></div>
+            </div>
+
+            {/* 実績② */}
+            <div className="text-center group">
+              <div className="mb-6">
+              </div>
+              <div className="flex items-start mb-3">
+                <div className="bg-[#9cc812] text-white text-xs font-bold px-2 py-1 mr-3 flex-shrink-0">
+                  実績②
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">スタイリストデビュー半年で<br />指名売上70万円達成</h3>
+              </div>
+              <p className="text-sm text-gray-500 mb-4">完全週休2日、有給休暇使用</p>
+              <div className="w-12 h-0.5 bg-[#D3B58D] mx-auto"></div>
+            </div>
+
+            {/* 実績③ */}
+            <div className="text-center group">
+              <div className="mb-6">
+              </div>
+              <div className="flex items-start mb-3">
+                <div className="bg-[#9cc812] text-white text-xs font-bold px-2 py-1 mr-3 flex-shrink-0">
+                  実績③
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">入社初月で給与支給40万円over</h3>
+              </div>
+              <p className="text-sm text-gray-500 mb-4">業務委託、月12日休み</p>
+              <div className="w-12 h-0.5 bg-[#D3B58D] mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* セクション間のセパレーター */}
       <div className="w-full h-2 bg-white"></div>
 
@@ -1082,7 +1146,7 @@ function MainComponent() {
             <StaffCard 
               image="/image/terai.jpeg"
               name="寺井 綾希 "
-              position="入社⚫︎年 / スタイリスト"
+              position="入社1年 / スタイリスト"
               message={`「不安な技術も責任持って指導します！」\nそんなオーナーの一言に心強さを感じ、入社を決意しました。\n\n完全週休二日制に加えて、予約のない日は定時前に帰宅できるため、\n自分の時間に余裕が持てるようになりました。`}
             />
           </div>
